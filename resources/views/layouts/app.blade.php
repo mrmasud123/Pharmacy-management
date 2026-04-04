@@ -135,4 +135,8 @@
 
 @stack('scripts')
 
+@yield('vendor-scripts')
+
+@yield('custom-scripts')
+
 </html>

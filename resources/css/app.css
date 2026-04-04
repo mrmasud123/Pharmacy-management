@@ -880,3 +880,78 @@ pre[class*='language-'] {
     margin-right: -60px !important;
   }
 }
+
+/* data table */
+/* 🔥 DataTables Dark Mode Fix */
+
+.dark .dataTables_wrapper {
+    color: #d1d5db; /* text-gray-300 */
+}
+
+/* Entries dropdown + search label */
+.dark .dataTables_length,
+.dark .dataTables_filter,
+.dark .dataTables_info {
+    color: #d1d5db;
+}
+
+/* Inputs */
+.dark .dataTables_filter input,
+.dark .dataTables_length select {
+    background-color: #1f2937; /* gray-800 */
+    color: #e5e7eb; /* gray-200 */
+    border: 1px solid #374151; /* gray-700 */
+    border-radius: 6px;
+    padding: 4px 8px;
+}
+
+/* Pagination buttons */
+.dark .dataTables_paginate .paginate_button {
+    color: #d1d5db !important;
+    background: transparent !important;
+}
+
+/* Active page */
+.dark .dataTables_paginate .paginate_button.current {
+    background-color: #2563eb !important; /* blue-600 */
+    color: white !important;
+    border-radius: 6px;
+}
+
+/* Hover */
+.dark .dataTables_paginate .paginate_button:hover {
+    background-color: #374151 !important;
+    color: white !important;
+}
+
+/* Disabled */
+.dark .dataTables_paginate .paginate_button.disabled {
+    color: #6b7280 !important;
+}
+
+.dark .dt-layout-cell.dt-layout-start,.dark .dt-layout-cell.dt-layout-end{
+  color :white;
+}
+
+/* yajra data table css */
+
+.dark .dataTables_wrapper {
+  color: #d1d5db;
+}
+
+.dark input, .dark select {
+  background: #1f2937;
+  color: #e5e7eb;
+}
+
+.dark td.sorting_1{
+  color:white;
+}
+table td
+{
+  height: 60px;
+}
+
+.dark .dt-empty{
+  color :white;
+}

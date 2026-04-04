@@ -153,6 +153,7 @@
                                                             :class="isActive('{{ $subItem['path'] }}') ?
                                                                 'menu-dropdown-item-active' :
                                                                 'menu-dropdown-item-inactive'">
+                                                                {!! MenuHelper::getIconSvg($subItem['icon']?? null) !!}
                                                             {{ $subItem['name'] }}
                                                             <span class="flex items-center gap-1 ml-auto">
                                                                 @if (!empty($subItem['new']))

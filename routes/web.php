@@ -1,12 +1,30 @@
 <?php
 
+use App\Http\Controllers\Admin\PermisssionController;
+use App\Http\Controllers\Admin\RolesController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
+ 
+ 
 
 // dashboard pages
 Route::get('/', function () {
     return view('pages.dashboard.ecommerce', ['title' => 'E-commerce Dashboard']);
 })->name('dashboard');
+
+
+Route::get('/roles', [RolesController::class, 'index'])->name('admin.roles');
+Route::get('/roles/create', [RolesController::class, 'create'])->name('admin.roles.create');
+Route::post('/roles', [RolesController::class, 'store'])->name('admin.roles.store');
+Route::get('/roles/{role}/permissions', [RolesController::class, 'show'])->name('admin.add.permissions.to.role');
+Route::put('/roles/{role}/permissions', [RolesController::class, 'assignPermission'])->name('admin.roles.update-permissions');
+Route::get('/admin/roles/data', [RolesController::class, 'data'])->name('roles.data');
+
+
+Route::get('/permissions', [PermisssionController::class, 'index'])->name('admin.permissions');
+Route::get('/permissions/create', [PermisssionController::class, 'create'])->name('admin.permissions.create');
+Route::post('/permissions', [PermisssionController::class, 'store'])->name('admin.permissions.store');
+
+
 
 // calender pages
 Route::get('/calendar', function () {

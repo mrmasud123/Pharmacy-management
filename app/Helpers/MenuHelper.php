@@ -15,6 +15,14 @@ class MenuHelper
                 ],
             ],
             [
+                'icon' => 'ai-assistant',
+                'name' => 'Roles & Permissions',
+                'subItems' => [
+                    ['icon' => 'ai-assistant', 'name' => 'Roles', 'path' => '/roles', 'pro' => false],
+                    ['icon' => 'dashboard', 'name' => 'Permissions', 'path' => '/permissions', 'pro' => false]
+                ]
+            ],
+            [
                 'icon' => 'calendar',
                 'name' => 'Calendar',
                 'path' => '/calendar',
