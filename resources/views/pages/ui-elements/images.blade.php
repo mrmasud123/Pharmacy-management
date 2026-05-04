@@ -19,7 +19,7 @@
 
 @section('content')
     {{-- Page Breadcrumb --}}
-    <x-common.page-breadcrumb pageTitle="Images" />
+<x-common.page-breadcrumb :pageTitle="[['name' => 'Categories', 'link'=> '#']]" />
 
     <div class="space-y-5 sm:space-y-6">
 

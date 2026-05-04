@@ -1,9 +1,12 @@
 @extends('layouts.app')
 
+
+ 
+
 @section('content')
 {{-- <x-common.page-breadcrumb pageTitle="{{ $title }}" /> --}}
 <x-common.page-breadcrumb :pageTitle="[['name' => 'Permissions', 'link'=> '#']]" />
-<div class="bg-white dark:bg-white/[0.03] rounded-xl shadow border border-gray-200 dark:border-gray-800 p-4">
+<div class="bg-white dark:bg-white/3 rounded-xl shadow border border-gray-200 dark:border-gray-800 p-4">
     
     <div class="flex mb-4">
         <a href="{{ route('admin.permissions.create') }}" class="px-3 py-1.5 flex items-center justify-center bg-blue-500 text-white rounded-lg hover:bg-blue-600 ml-auto">

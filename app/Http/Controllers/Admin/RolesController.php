@@ -6,8 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-
-// use App\Models\Role;
+ 
 use Yajra\DataTables\Facades\DataTables;
 class RolesController extends Controller
 {
@@ -60,34 +59,37 @@ class RolesController extends Controller
     }
 
 
-public function data()
-{
-    $roles = Role::with('permissions')->select('roles.*');
-
-    return DataTables::of($roles)
-
-        ->addColumn('permissions', function ($role) {
-            if ($role->permissions->count()) {
-                return $role->permissions->pluck('name')->take(3)->map(function ($name) {
-                    return '<span class="px-2 py-1 text-xs rounded bg-blue-100 text-blue-600">'.$name.'</span>';
-                })->implode(' ') 
-                . ($role->permissions->count() > 3 
-                    ? '<span class="text-xs text-gray-500 ml-1">+'.($role->permissions->count()-3).' more</span>' 
-                    : '');
-            }
-
-            return '<span class="text-gray-500">No permissions</span>';
-        })
-
-        ->addColumn('action', function ($role) {
-            return '
-                <a href="'.route('admin.add.permissions.to.role', $role->id).'" class="text-yellow-600 hover:underline mr-2">Permissions</a>
-                <a class="text-blue-600 hover:underline mr-2 editBtn" data-id="'.$role->id.'">Edit</a>
-                <a class="text-red-600 hover:underline deleteBtn" data-id="'.$role->id.'">Delete</a>
-            ';
-        })
-
-        ->rawColumns(['permissions', 'action'])
-        ->make(true);
-}
+    public function data()
+    {
+        return DataTables::of(Role::query()->with('permissions'))
+            ->addColumn('permissions', function ($role) {
+    
+                $perms = $role->permissions;
+    
+                if ($perms->isEmpty()) {
+                    return '<span class="text-gray-500">No permissions</span>';
+                }
+    
+                $html = $perms->take(3)->map(function ($p) {
+                    return '<span class="px-2 py-1 text-xs rounded bg-blue-100 text-blue-600">'.$p->name.'</span>';
+                })->implode(' ');
+    
+                if ($perms->count() > 3) {
+                    $html .= '<span class="text-xs text-gray-500 ml-1">+'.($perms->count()-3).' more</span>';
+                }
+    
+                return $html;
+            })
+    
+            ->addColumn('action', function ($role) {
+                return '
+                    <a href="'.route('admin.add.permissions.to.role', $role->id).'" class="text-yellow-600 mr-2">Permissions</a>
+                    <button class="text-blue-600 mr-2 editBtn" data-id="'.$role->id.'">Edit</button>
+                    <button class="text-red-600 deleteBtn" data-id="'.$role->id.'">Delete</button>
+                ';
+            })
+    
+            ->rawColumns(['permissions', 'action'])
+            ->make(true);
+    }
 }

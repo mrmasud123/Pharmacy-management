@@ -2,12 +2,8 @@
 @import 'prismjs/themes/prism.min.css';
 @import 'tailwindcss';
 
-
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
-
 
 @custom-variant dark (&:is(.dark *));
 
@@ -954,4 +950,38 @@ table td
 
 .dark .dt-empty{
   color :white;
+}
+
+.swal2-container.swal2-center.swal2-backdrop-show{
+  z-index:99999 !important;
+}
+
+/* Light mode */
+table.dataTable tbody td {
+    color: #1f2937; /* gray-800 */
+}
+
+/* Dark mode */
+.dark table.dataTable tbody td {
+    color: #e5e7eb; /* gray-200 */
+}
+
+.input-style {
+  @apply shadow-sm focus:border-blue-500 focus:ring-blue-500/20
+  h-11 rounded-lg border border-gray-300 
+  bg-transparent px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400
+  focus:ring-2 focus:outline-none 
+  dark:border-gray-700 dark:bg-gray-900
+  dark:text-white/90 dark:placeholder:text-white/30;
+}
+/* Chrome, Safari, Edge, Opera */
+ #grand_total,.available_qty ::-webkit-outer-spin-button,
+ #grand_total,.available_qty ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+#grand_total,.available_qty  {
+    -moz-appearance: textfield;
 }

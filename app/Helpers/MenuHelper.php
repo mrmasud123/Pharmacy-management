@@ -6,22 +6,53 @@ class MenuHelper
 {
     public static function getMainNavItems()
     {
+        
         return [
             [
-                'icon' => 'dashboard',
+                'icon' => 'lucide:home',
                 'name' => 'Dashboard',
                 'subItems' => [
                     ['name' => 'Ecommerce', 'path' => '/'],
                 ],
             ],
             [
-                'icon' => 'ai-assistant',
+                'icon' => 'lucide:grid-3x3',
+                'name' => 'Measurement Units',
+                'path' => '/units',
+                // 'pro' => false
+            ],
+            [
+                'icon' => 'lucide:shield-check',
                 'name' => 'Roles & Permissions',
                 'subItems' => [
-                    ['icon' => 'ai-assistant', 'name' => 'Roles', 'path' => '/roles', 'pro' => false],
-                    ['icon' => 'dashboard', 'name' => 'Permissions', 'path' => '/permissions', 'pro' => false]
+                    ['icon' => 'lucide:shield', 'name' => 'Roles', 'path' => '/roles', 'pro' => false],
+                    ['icon' => 'lucide:lock', 'name' => 'Permissions', 'path' => '/permissions', 'pro' => false]
                 ]
             ],
+            [
+                'icon' => 'lucide:shopping-cart',
+                'name' => 'Sales',
+                'subItems' => [
+                    ['icon' => 'lucide:receipt', 'name' => 'Sale list', 'path' => '/sales'],
+                    ['icon' => 'lucide:plus-circle', 'name' => 'New sale', 'path' => '/sales-create'],
+                    ['icon' => 'lucide:credit-card', 'name' => 'Collection', 'path' => '/collections'],
+                    ['icon' => 'lucide:file-text', 'name' => 'Invoice wise collection', 'path' => '/invoice-wise-collection'],
+                ],
+            ],
+            [
+                'icon' => 'lucide:package',
+                'name' => 'Product Management',
+                'subItems' => [
+                    ['icon' => 'lucide:box', 'name' => 'Products', 'path' => '/products'],
+                    ['icon' => 'lucide:truck', 'name' => 'Suppliers', 'path' => '/suppliers'],
+                    ['icon' => 'lucide:tag', 'name' => 'Brands', 'path' => '/brands'],
+                    ['icon' => 'lucide:layers', 'name' => 'Product Types', 'path' => '/product-types'],
+                    ['icon' => 'lucide:grid-3x3', 'name' => 'Categories', 'path' => '/categories'],
+                ],
+            ],
+            
+            
+            
             [
                 'icon' => 'calendar',
                 'name' => 'Calendar',

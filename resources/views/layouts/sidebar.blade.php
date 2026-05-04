@@ -1,4 +1,3 @@
-
 @php
     use App\Helpers\MenuHelper;
     $menuGroups = MenuHelper::getMenuGroups();
@@ -23,10 +22,19 @@
                     @if (isset($item['subItems']))
                         // Check if any submenu item matches current path
                         @foreach ($item['subItems'] as $subItem)
-                            if (currentPath === '{{ ltrim($subItem['path'], '/') }}' ||
-                                window.location.pathname === '{{ $subItem['path'] }}') {
+                        {{-- if (
+                            currentPath.startsWith('{{ ltrim($subItem['path'], '/') }}') ||
+                            window.location.pathname.startsWith('{{ $subItem['path'] }}')
+                        ) {
                                 this.openSubmenus['{{ $groupIndex }}-{{ $itemIndex }}'] = true;
-                            } @endforeach
+                            } --}}
+                            if (
+                                currentPath === '{{ ltrim($subItem['path'], '/') }}' ||
+                                currentPath.startsWith('{{ ltrim($subItem['path'], '/') }}/')
+                            ) {
+                                this.openSubmenus['{{ $groupIndex }}-{{ $itemIndex }}'] = true;
+                            }
+                                 @endforeach
             @endif
             @endforeach
             @endforeach
@@ -46,8 +54,14 @@
             const key = groupIndex + '-' + itemIndex;
             return this.openSubmenus[key] || false;
         },
-        isActive(path) {
+        {{-- isActive(path) {
             return window.location.pathname === path || '{{ $currentPath }}' === path.replace(/^\//, '');
+        } --}}
+        isActive(path) {
+            const cleanPath = path.replace(/^\//, '');
+            const current = '{{ $currentPath }}';
+        
+            return current === cleanPath || current.startsWith(cleanPath + '/');
         }
     }"
     :class="{
@@ -114,7 +128,7 @@
                                             <!-- Icon -->
                                             <span :class="isSubmenuOpen({{ $groupIndex }}, {{ $itemIndex }}) ?
                                                     'menu-item-icon-active' : 'menu-item-icon-inactive'">
-                                                {!! MenuHelper::getIconSvg($item['icon']) !!}
+                                                <span class="iconify w-6 h-6" data-icon="{{ $item['icon'] }}"></span>
                                             </span>
 
                                             <!-- Text -->
@@ -153,7 +167,7 @@
                                                             :class="isActive('{{ $subItem['path'] }}') ?
                                                                 'menu-dropdown-item-active' :
                                                                 'menu-dropdown-item-inactive'">
-                                                                {!! MenuHelper::getIconSvg($subItem['icon']?? null) !!}
+                                                                <span class="iconify w-6 h-6" data-icon="{{ $subItem['icon'] ?? null }}"></span>
                                                             {{ $subItem['name'] }}
                                                             <span class="flex items-center gap-1 ml-auto">
                                                                 @if (!empty($subItem['new']))
@@ -193,7 +207,7 @@
                                             <span
                                                 :class="isActive('{{ $item['path'] }}') ? 'menu-item-icon-active' :
                                                     'menu-item-icon-inactive'">
-                                                {!! MenuHelper::getIconSvg($item['icon']) !!}
+                                                <span class="iconify w-6 h-6" data-icon="{{ $item['icon'] }}"></span>
                                             </span>
 
                                             <!-- Text -->
