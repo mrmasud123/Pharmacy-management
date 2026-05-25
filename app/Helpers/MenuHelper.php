@@ -18,15 +18,20 @@ class MenuHelper
             [
                 'icon' => 'lucide:grid-3x3',
                 'name' => 'Measurement Units',
-                'path' => '/units',
-                // 'pro' => false
+                'path' => '/units', 
+            ],
+            [
+                'icon' => 'lucide:users',
+                'name' => 'Employees',
+                'path' => '/employees', 
             ],
             [
                 'icon' => 'lucide:shield-check',
                 'name' => 'Roles & Permissions',
                 'subItems' => [
                     ['icon' => 'lucide:shield', 'name' => 'Roles', 'path' => '/roles', 'pro' => false],
-                    ['icon' => 'lucide:lock', 'name' => 'Permissions', 'path' => '/permissions', 'pro' => false]
+                    ['icon' => 'lucide:lock', 'name' => 'Permissions', 'path' => '/permissions', 'pro' => false],
+                    ['icon' => 'lucide:users', 'name' => 'Role Permission Mapping', 'path' => '/role-permission-mapping', 'pro' => false]
                 ]
             ],
             [

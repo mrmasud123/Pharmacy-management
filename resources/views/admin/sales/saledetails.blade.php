@@ -17,9 +17,31 @@
 
         <!-- Header -->
         <div class="mb-6">
-            <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
-                Invoice: {{ $sale->invoice_no }}
-            </h2>
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                <!-- Invoice -->
+                <div>
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
+                        Invoice: <span class="text-green-600">{{ $sale->invoice_no }}</span>
+                    </h2>
+                </div>
+            
+                <!-- Customer Highlight Card -->
+                <div class="bg-green-50 dark:bg-gray-800 border border-green-200 dark:border-gray-700 rounded-lg px-4 py-3 shadow-sm">
+                    <p class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                        Customer
+                    </p>
+            
+                    <p class="text-lg font-semibold text-gray-800 dark:text-white">
+                        {{ $sale->customer->name ?? 'N/A' }}
+                    </p>
+            
+                    <p class="text-sm text-gray-600 dark:text-gray-300">
+                        {{ $sale->customer->phone ?? 'N/A' }}
+                    </p>
+                </div>
+            
+            </div>
     
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 text-sm text-gray-600 dark:text-gray-300">
     
@@ -49,16 +71,37 @@
                 </div>
     
                 <div>
-                    <span class="font-semibold">Due:</span>
-                    <span class="{{ $sale->due > 0 ? 'text-red-500' : 'text-green-500' }}">
-                        {{ number_format($sale->due, 2) }}
+                    @php
+                        $due = (float) $sale->due;
+                    @endphp
+                    <span class="font-semibold">
+                        @if ($due >0)
+                            Due : 
+                        @elseif ($due < 0)
+                            {{-- Due :  --}}
+                            Over Paid : 
+                        @else
+                            Paid
+                        @endif
+                    </span>
+
+                    <span class="
+                        {{
+                            $due > 0
+                                ? 'text-red-500'
+                                : ($due < 0
+                                    ? 'text-yellow-500'
+                                    : 'text-green-500')
+                        }}
+                    ">
+                        {{ number_format($due, 2) }}
                     </span>
                 </div>
     
-                <div>
+                {{-- <div>
                     <span class="font-semibold">Status:</span>
                     {{ ucfirst($sale->status) }}
-                </div>
+                </div> --}}
     
                 <div>
                     <span class="font-semibold">Date:</span>

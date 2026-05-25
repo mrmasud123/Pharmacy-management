@@ -976,12 +976,19 @@ table.dataTable tbody td {
 }
 /* Chrome, Safari, Edge, Opera */
  #grand_total,.available_qty ::-webkit-outer-spin-button,
- #grand_total,.available_qty ::-webkit-inner-spin-button {
+ #grand_total,.available_qty ::-webkit-inner-spin-button,
+ #cust_phone {
     -webkit-appearance: none;
     margin: 0;
 }
 
 /* Firefox */
-#grand_total,.available_qty  {
+#grand_total,.available_qty,
+#cust_phone  {
     -moz-appearance: textfield;
 }
+.ts-wrapper .ts-control {
+  padding: 10px !important;
+  border-radius: 9px !important;
+}
+ 

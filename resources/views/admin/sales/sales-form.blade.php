@@ -3,7 +3,7 @@
 
 @section('vendor-scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @vite('resources/assets/js/sales.js')
+    @vite('resources/assets/js/create-sale.js')
 @endsection
 @section('content')
 
@@ -28,32 +28,30 @@
                 Customer Name/Phone *
             </label>
 
-            <div class="flex gap-2">
-                <input type="text" name="customer"
-                    placeholder="Walking Customer"
-                    class="flex-1 dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 
-                    dark:focus:border-brand-800 h-11 rounded-lg border border-gray-300 
-                    bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 
-                    focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 
-                    dark:text-white/90 dark:placeholder:text-white/30" />
+            <div class="flex gap-2"> 
+                    <select id="customerSelect" name="customer_id" placeholder="Search customer..." class="w-100" ></select>
 
-                <button class="bg-green-600 text-white px-3 rounded">+</button>
+                    <button type="button" id="addCustomerBtn" class="bg-green-600 text-white px-3 rounded">+</button>
             </div>
         </div>
 
-        <!-- Date -->
-        <div>
-            <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                Date *
-            </label>
-
-            <input type="date" name="date"
-                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 
-                dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 
-                bg-transparent px-4 py-2.5 text-sm text-gray-800 
-                focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 
-                dark:text-white/90" />
-        </div>
+        <div class=" ">
+            {{-- <div class="flex-1"> --}}
+                <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
+                    Sale date *
+                </label>
+        
+                <x-form.date-picker 
+                    id="date_pick" 
+                    name="sale_date"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
+                              bg-white dark:bg-gray-800 
+                              text-gray-800 dark:text-gray-100"
+                       required
+                    placeholder="Date Picker" 
+                    defaultDate="{{ now()->format('Y-m-d') }}" 
+                />
+            </div>
     </div>
     <form action="" id="saleForm"> 
         <!-- POS Table --> 

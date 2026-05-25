@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Services\SaleService;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\Product;
+
 use App\Models\ProductBatch;
  
 use App\Models\Sale;
@@ -78,12 +79,13 @@ class SalesController extends Controller
         $sale = $service->createSale($data);
 
         return response()->json([
+            'status'=> true,
             'message' => 'Sale completed',
             'sale' => $sale
-        ]);
+        ],200);
     }
     public function show(Sale $sale){
-        $sale= $sale->load('items');
+        $sale->load(['items.product', 'customer']);
         return view('admin.sales.saledetails', compact('sale'));
     }
     
@@ -116,21 +118,55 @@ class SalesController extends Controller
     }
     
     
-    public function data()
-    {
-        return DataTables::of(
-            Sale::query()
-                ->select([
-                    'id',
-                    'invoice_no',
-                    'grand_total',
-                    'paid',
-                    'due',
-                    'status',
-                    'created_at'
-                ])
-                ->withCount('items') // 👈 important
-        )
+    public function data(Request $request)
+{
+    $query = Sale::query()
+        ->select([
+            'id',
+            'invoice_no',
+            'grand_total',
+            'paid',
+            'due',
+            'status',
+            'created_at',
+            'customer_id'
+        ])
+
+        ->with('customer:id,name,phone')
+        ->withCount('items')
+
+        ->when($request->filled('customer_id'), function ($q) use ($request) {
+            $q->where('customer_id', $request->customer_id);
+        })
+
+        ->when($request->filled('invoice_no'), function ($q) use ($request) {
+            $q->where('invoice_no', $request->invoice_no);
+        })
+
+        ->when($request->filled('sale_date'), function ($q) use ($request) {
+
+            $q->whereDate(
+                'sale_date',
+                \Carbon\Carbon::parse($request->sale_date)->format('Y-m-d')
+            );
+        });
+
+    return DataTables::of($query)
+
+        ->addColumn('customer', function ($sale) {
+
+            return '
+                <div class="p-2">
+                    <div class="font-medium">
+                        '.$sale->customer?->name.'
+                    </div>
+
+                    <div class="text-xs text-gray-500">
+                        '.$sale->customer?->phone.'
+                    </div>
+                </div>
+            ';
+        })
 
         ->addColumn('date', function ($sale) {
             return $sale->created_at->format('d M Y H:i');
@@ -139,39 +175,51 @@ class SalesController extends Controller
         ->addColumn('items', function ($sale) {
             return $sale->items_count;
         })
-        
+
         ->addColumn('due', function ($sale) {
 
             $due = number_format($sale->due, 2);
-        
+
             if ($sale->due > 0) {
-                return '<span class="px-2 py-1 text-red-600 bg-red-100 rounded">'.$due.'</span>';
+                return '
+                    <span class="px-2 py-1 text-red-600 bg-red-100 rounded">
+                        '.$due.'
+                    </span>
+                ';
+                }else if($sale->due < 0){
+                return '
+                    <span class="px-2 py-1 text-white-100 bg-purple-600 rounded">
+                        '.$due.'
+                    </span>
+                ';
+                
             }
-        
-            return '<span class="px-2 py-1 text-green-600 bg-green-100 rounded">'.$due.'</span>';
+
+            return '
+                <span class="px-2 py-1 text-green-600 bg-green-100 rounded">
+                    '.$due.'
+                </span>
+            ';
         })
-        // ->addColumn('status_badge', function ($sale) {
-        //     return $sale->status === 'completed'
-        //         ? '<span class="px-2 py-1 text-green-600 bg-green-100 rounded">Completed</span>'
-        //         : '<span class="px-2 py-1 text-red-600 bg-red-100 rounded">Cancelled</span>';
-        // })
 
         ->addColumn('action', function ($sale) {
+
             return '
                 <div class="flex items-center gap-2">
 
-                    <a href="' . route('admin.sales.show', $sale->id) . '"
+                    <a href="'.route('admin.sales.show', $sale->id).'"
                     class="p-2 text-blue-600 hover:bg-blue-50 rounded-md">
                         View
                     </a>
 
-                    <a href="' . route('admin.sales.invoice', $sale->id) . '"
+                    <a href="'.route('admin.sales.invoice', $sale->id).'"
                     class="p-2 text-indigo-600 hover:bg-indigo-50 rounded-md">
                         Invoice
                     </a>
 
-                    <button class="p-2 text-red-600 hover:bg-red-50 rounded-md cancelSaleBtn"
-                            data-id="' . $sale->id . '">
+                    <button
+                        class="p-2 text-red-600 hover:bg-red-50 rounded-md cancelSaleBtn"
+                        data-id="'.$sale->id.'">
                         Cancel
                     </button>
 
@@ -179,7 +227,7 @@ class SalesController extends Controller
             ';
         })
 
-        ->rawColumns(['action','due'])
+        ->rawColumns(['action', 'due', 'customer'])
         ->make(true);
-    }
+}
 }

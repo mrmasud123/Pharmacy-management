@@ -18,7 +18,9 @@ class SaleItem extends Model
         return $this->belongsTo(ProductBatch::class);
     }
     
- 
+    public function product(){
+        return $this->belongsTo(Product::class);
+    }
 
     public function batch()
     {

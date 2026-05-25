@@ -33,6 +33,9 @@ class StoreSaleRequest extends FormRequest
 
             'items.*.total' => 'required|numeric|min:0',
             'paid' => 'nullable|numeric|min:0',
+            
+            'customer_id' => 'nullable|exists:customers,id',
+            'sale_date'=> 'nullable|date'
         ];
     }
  

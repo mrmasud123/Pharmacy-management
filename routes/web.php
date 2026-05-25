@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\EmployeesController;
 use App\Http\Controllers\Admin\PermisssionController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductTypeController;
@@ -134,7 +136,41 @@ Route::get('/admin/category/data', [CategoryController::class, 'data'])
 Route::post('/admin/category/status/{id}', [CategoryController::class, 'updateStatus']);
 
 
+// Employees
+Route::get('/employees', [EmployeesController::class, 'employees'])
+    ->name('admin.employees.manage');
+    
+Route::get('/role-permission-mapping', [EmployeesController::class, 'rolePermissionMapping'])
+    ->name('role.permission.mapping');
+    
+Route::post('/role-permission-mapping/store',
+    [EmployeesController::class, 'storeMapping']
+)->name('role.permission.mapping.store');
+    
+Route::get('/employees/with/roles/permissions/data', [EmployeesController::class, 'employeesWithRolesPermissionData'])->name('admin.employees.with.roles.permissions.data');
 
+Route::get('/employees/create', [EmployeesController::class, 'createEmployee'])
+    ->name('admin.employees.create');
+
+Route::post('/employees', [EmployeesController::class, 'storeEmployee'])
+    ->name('admin.employee.store');
+
+Route::get('/employees/{employee}/edit', [EmployeesController::class, 'editEmployee'])
+    ->name('admin.employees.edit');
+
+Route::put('/employees/{employee}', [EmployeesController::class, 'updateEmployee'])
+    ->name('admin.employee.update');
+
+Route::get('/role-permission-mapping/map/{employee}', [EmployeesController::class, 'assignEmployeeRole'])
+    ->name('admin.assign.role');
+
+Route::delete('/employees/{employee}', [EmployeesController::class, 'deleteEmployee'])
+    ->name('admin.employees.destroy');
+
+Route::get('/admin/employee/data', [EmployeesController::class, 'data'])
+    ->name('admin.employee.data');
+
+Route::post('/admin/employee/status/{id}', [EmployeesController::class, 'updateStatus']);
 
 //products
 Route::get('/products', [ProductController::class, 'products'])->name('admin.products.manage');
@@ -152,7 +188,10 @@ Route::post('/products/stock/{product}/store', [ProductController::class, 'store
  
 // Route::post('/stock/products/{product}/store', [ProductController::class, 'storeStock'])->name('admin.product.stock.store');
     
-    
+//Customers
+Route::get('/customers/search', [CustomerController::class, 'search'])->name('admin.customers.search');
+Route::get('/customers/invoice', [CustomerController::class, 'invoice'])->name('admin.customers.invoice');
+Route::post('/customers/store', [CustomerController::class, 'store'])->name('admin.customers.store');
     
     
     

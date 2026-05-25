@@ -75,6 +75,8 @@ class SaleService
                 'due'         => round($due, 2),
     
                 'status'      => 'completed',
+                'customer_id' => $data['customer_id'] ?? null,
+                'sale_date'   => $data['sale_date'] ?? date('Y-m-d'),
             ]);
     
             foreach ($preparedItems as $item) {

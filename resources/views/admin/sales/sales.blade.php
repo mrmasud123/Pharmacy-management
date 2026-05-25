@@ -16,54 +16,46 @@
         <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
             Sales List
         </h2>
-
-        {{-- <a href="{{ route('admin.sales.create') }}"
-           class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg shadow transition">
-            + Add Sale
-        </a> --}}
     </div>
     
     <div class="flex flex-wrap items-end gap-3 mb-6">
 
         <!-- Customer -->
-        <div>
+        <div class="flex-1">
             <label class="text-xs text-gray-500 dark:text-gray-300">Customer</label>
-            <select id="filterCustomer" class="w-full mt-1 px-3 py-2 border rounded-lg dark:bg-white/5 dark:text-white">
-                <option value="">All</option>
-                {{-- @foreach($sales->pluck('customer.name')->filter()->unique() as $customer)
-                    <option value="{{ $customer }}">{{ $customer }}</option>
-                @endforeach --}}
-            </select>
+        
+            <select id="customerSelect" name="customer_id" placeholder="Search customer..." class="mt-1" ></select>
         </div>
-    
+        
         <!-- Invoice -->
-        <div>
+        <div class="flex-1">
             <label class="text-xs text-gray-500 dark:text-gray-300">Invoice</label>
-            <input type="text" id="filterInvoice"
-                   class="w-full mt-1 px-3 py-2 border rounded-lg dark:bg-white/5 dark:text-white"
-                   placeholder="Search invoice">
+            <select id="invoiceSelect" name="invoice_id" placeholder="Search invoice..." class="mt-1" ></select> 
         </div>
-    
-        <!-- Start Date -->
-        <div>
-            <label class="text-xs text-gray-500 dark:text-gray-300">Start Date</label>
-            <input type="date" id="startDate"
-                   class="w-full mt-1 px-3 py-2 border rounded-lg dark:bg-white/5 dark:text-white">
+     
+        <div class="flex-1">
+            <label class="text-xs text-gray-500 dark:text-gray-300">Sale Date</label> 
+                   <x-form.date-picker 
+                    id="sale_date" 
+                    name="sale_date"
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
+                              bg-white dark:bg-gray-800 
+                              text-gray-800 dark:text-gray-100"
+                       required
+                    placeholder="Date Picker" 
+                    
+                />
         </div>
-    
-        <!-- End Date -->
-        <div>
-            <label class="text-xs text-gray-500 dark:text-gray-300">End Date</label>
-            <input type="date" id="endDate"
-                   class="w-full mt-1 px-3 py-2 border rounded-lg dark:bg-white/5 dark:text-white">
-        </div>
-    
-        <!-- Button -->
-        <div class="flex items-end">
-            <button id="filterBtn"
+     
+        <div class="flex items-end ms-auto">
+            {{-- <button id="filterBtn"
                     class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg shadow transition">
                 Apply
-            </button>
+            </button>  --}}
+            <button id="clearFilter"
+                    class="ms-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg shadow transition">
+                Reset
+            </button> 
         </div>
     
     </div>
@@ -77,11 +69,11 @@
                   
                     <th class="px-4 py-3">Invoice</th>
                     <th class="px-4 py-3">Date</th>
+                    <th class="px-4 py-3">Customer</th>
                     <th class="px-4 py-3">Items</th>
                     <th class="px-4 py-3">Total</th>
                     <th class="px-4 py-3">Paid</th>
-                    <th class="px-4 py-3">Due</th>
-                    {{-- <th class="px-4 py-3">Status</th> --}}
+                    <th class="px-4 py-3">Due</th> 
                     <th class="px-4 py-3">Action</th>
                 </tr>
             </thead>
