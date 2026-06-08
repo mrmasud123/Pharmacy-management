@@ -2,12 +2,15 @@ import './bootstrap';
 import Alpine from 'alpinejs';
 import ApexCharts from 'apexcharts';
 import '@iconify/iconify'
+
 // flatpickr
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 // FullCalendar
 import { Calendar } from '@fullcalendar/core';
 import $ from 'jquery';
+console.log("From Layout");
+
 
 window.$ = window.jQuery = $;
 
@@ -17,7 +20,7 @@ window.flatpickr = flatpickr;
 window.FullCalendar = Calendar;
 
 Alpine.start();
-
+document.dispatchEvent(new Event('app:ready'));
 // Initialize components on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
     // Map imports

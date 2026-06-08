@@ -5,15 +5,15 @@
         <div class="relative flex h-screen w-full flex-col justify-center sm:p-0 lg:flex-row dark:bg-gray-900">
             <!-- Form -->
             <div class="flex w-full flex-1 flex-col lg:w-1/2">
-                <div class="mx-auto w-full max-w-md pt-10">
-                    <a href="/"
-                        class="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
-                        <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <path d="M12.7083 5L7.5 10.2083L12.7083 15.4167" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        Back to dashboard
-                    </a>
-                </div>
+{{--                <div class="mx-auto w-full max-w-md pt-10">--}}
+{{--                    <a href="/"--}}
+{{--                        class="inline-flex items-center text-sm text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">--}}
+{{--                        <svg class="stroke-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">--}}
+{{--                            <path d="M12.7083 5L7.5 10.2083L12.7083 15.4167" stroke="" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />--}}
+{{--                        </svg>--}}
+{{--                        Back to dashboard--}}
+{{--                    </a>--}}
+{{--                </div>--}}
                 <div class="mx-auto flex w-full max-w-md flex-1 flex-col justify-center">
                     <div>
                         <div class="mb-5 sm:mb-8">
@@ -64,9 +64,9 @@
                                     <span class="bg-white p-2 text-gray-400 sm:px-5 sm:py-2 dark:bg-gray-900">Or</span>
                                 </div>
                             </div>
-                            <form>
+                            <form action="{{route('login')}}" method="post" id="loginForm">
+                                @csrf
                                 <div class="space-y-5">
-                                    <!-- Email -->
                                     <div>
                                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                                             Email<span class="text-error-500">*</span>
@@ -80,7 +80,7 @@
                                             Password<span class="text-error-500">*</span>
                                         </label>
                                         <div x-data="{ showPassword: false }" class="relative">
-                                            <input :type="showPassword ? 'text' : 'password'"
+                                            <input id="password" name="password" :type="showPassword ? 'text' : 'password'"
                                                 placeholder="Enter your password"
                                                 class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent py-2.5 pr-11 pl-4 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
                                             <span @click="showPassword = !showPassword"
@@ -169,3 +169,95 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{{--    <script>--}}
+{{--        document.addEventListener('app:ready', function () {--}}
+{{--            window.$(function () {--}}
+{{--                console.log('Sign in page');--}}
+{{--                var form= $("#loginForm");--}}
+
+{{--                form.submit(function(e){--}}
+{{--                    e.preventDefault();--}}
+
+{{--                });--}}
+{{--            });--}}
+{{--        });--}}
+{{--    </script>--}}
+
+    <script>
+        document.addEventListener('app:ready', function () {
+
+            window.$(function () {
+
+                console.log('Sign in page loaded');
+
+                var form = $("#loginForm");
+
+                form.on("submit", function (e) {
+                    e.preventDefault();
+
+                    let email = $("#email").val();
+                    let password = $("#password").val();
+
+                    if (!email || !password) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Missing Fields',
+                            text: 'Please enter email and password'
+                        });
+                        return;
+                    }
+
+                    $.ajax({
+                        url: form.attr('action'),
+                        type: form.attr("method"),
+                        data: form.serialize(),
+                        beforeSend: function () {
+                            Swal.fire({
+                                title: 'Logging in...',
+                                text: 'Please wait',
+                                allowOutsideClick: false,
+                                didOpen: () => {
+                                    Swal.showLoading();
+                                }
+                            });
+                        },
+                        success: function (response) {
+
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: response.message,
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                            console.log(response);
+
+                            setTimeout(() => {
+                                window.location.href = "/";
+                            }, 1500);
+                        },
+                        error: function (xhr) {
+
+                            let message = "Login failed";
+
+                            if (xhr.responseJSON && xhr.responseJSON.message) {
+                                message = xhr.responseJSON.message;
+                            }
+
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: message
+                            });
+                        }
+                    });
+
+                });
+
+            });
+
+        });
+    </script>
+@endpush
