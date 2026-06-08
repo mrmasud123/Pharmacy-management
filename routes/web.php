@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\SalesController;
 use App\Http\Controllers\Admin\SuppliersController;
 use App\Http\Controllers\Admin\UnitsController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AIChatbotController;
 
 
 
@@ -35,21 +36,21 @@ Route::get('/permissions/create', [PermisssionController::class, 'create'])->nam
 Route::post('/permissions', [PermisssionController::class, 'store'])->name('admin.permissions.store');
 
 //Sales
- 
+
 Route::get('/sales', [SalesController::class, 'index'])->name('admin.sales.index');
 
 Route::get('/sales/data', [SalesController::class, 'data'])->name('admin.sales.data');
- 
+
 Route::get('/sales-create', [SalesController::class, 'create'])->name('admin.sales.create');
- 
+
 Route::post('/sales', [SalesController::class, 'store'])->name('admin.sales.store');
- 
+
 Route::get('/sales/{sale}', [SalesController::class, 'show'])->name('admin.sales.show');
- 
+
 Route::get('/sales/{sale}/edit', [SalesController::class, 'edit'])->name('admin.sales.edit');
- 
+
 Route::put('/sales/{sale}', [SalesController::class, 'update'])->name('admin.sales.update');
- 
+
 Route::delete('/sales/{sale}', [SalesController::class, 'destroy'])->name('admin.sales.destroy');
 
 Route::get('/sales/invoice/{id}', [SalesController::class, 'invoices'])->name('admin.sales.invoice');
@@ -89,7 +90,7 @@ Route::post('/brands', [BrandController::class, 'store'])->name('admin.brand.sto
 Route::put('/brands/{brand}', [BrandController::class, 'update'])->name('admin.brand.update');
 Route::post('/admin/brand/status/{id}', [BrandController::class, 'updateStatus'])->name('admin.brand.status.update');
 
-//Units 
+//Units
 Route::get('/units', [UnitsController::class, 'units'])->name('admin.units.manage');
 Route::post('/units', [UnitsController::class, 'store'])->name('admin.unit.store');
 Route::put('/units/{unit}', [UnitsController::class, 'update'])->name('admin.unit.update');
@@ -139,14 +140,14 @@ Route::post('/admin/category/status/{id}', [CategoryController::class, 'updateSt
 // Employees
 Route::get('/employees', [EmployeesController::class, 'employees'])
     ->name('admin.employees.manage');
-    
+
 Route::get('/role-permission-mapping', [EmployeesController::class, 'rolePermissionMapping'])
     ->name('role.permission.mapping');
-    
+
 Route::post('/role-permission-mapping/store',
     [EmployeesController::class, 'storeMapping']
 )->name('role.permission.mapping.store');
-    
+
 Route::get('/employees/with/roles/permissions/data', [EmployeesController::class, 'employeesWithRolesPermissionData'])->name('admin.employees.with.roles.permissions.data');
 
 Route::get('/employees/create', [EmployeesController::class, 'createEmployee'])
@@ -185,16 +186,21 @@ Route::put('/products/{product}', [ProductController::class, 'updateProduct'])->
 Route::get('/products/stock/{product}/create', [ProductController::class, 'addStock'])->name('admin.product.stock.create');
 Route::get('/products/{product}/batches', [ProductController::class, 'viewStock'])->name('admin.product.batches.view');
 Route::post('/products/stock/{product}/store', [ProductController::class, 'storeStock'])->name('admin.product.stock.store');
- 
+
 // Route::post('/stock/products/{product}/store', [ProductController::class, 'storeStock'])->name('admin.product.stock.store');
-    
+
 //Customers
 Route::get('/customers/search', [CustomerController::class, 'search'])->name('admin.customers.search');
 Route::get('/customers/invoice', [CustomerController::class, 'invoice'])->name('admin.customers.invoice');
 Route::post('/customers/store', [CustomerController::class, 'store'])->name('admin.customers.store');
-    
-    
-    
+
+
+
+//AI chat bot
+
+Route::get('/ai-chat', [AIChatbotController::class, 'index'])->name('admin.ai-chat.index');
+Route::post('/continue-chat', [AIChatbotController::class, 'continueChat'])->name('admin.ai-chat.continue');
+
 // calender pages
 Route::get('/calendar', function () {
     return view('pages.calender', ['title' => 'Calendar']);
