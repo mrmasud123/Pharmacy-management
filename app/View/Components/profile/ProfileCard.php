@@ -3,22 +3,18 @@
 namespace App\View\Components\profile;
 
 use Closure;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class ProfileCard extends Component
 {
-    /**
-     * Create a new component instance.
-     */
-    public function __construct()
+    public User $admin;
+    public function __construct(User $admin)
     {
-        //
+        $this->admin = $admin;
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     */
     public function render(): View|Closure|string
     {
         return view('components.profile.profile-card');

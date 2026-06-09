@@ -14,11 +14,20 @@ use App\Http\Controllers\Admin\SuppliersController;
 use App\Http\Controllers\Admin\UnitsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AIChatbotController;
+use App\Http\Controllers\Admin\AdminController;
 
 
 
+//Authentication
+Route::get('/login', [AuthController::class, 'index'])->name('login.index');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+Route::get('/auth/google/redirect', [AuthController::class, 'googleRedirect'])->name('auth.google.redirect');
+Route::get('/auth/google/callback', [AuthController::class, 'googleCallback'])->name('auth.google.callback');
 // dashboard pages
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/', function () {
         return view('pages.dashboard.ecommerce', ['title' => 'E-commerce Dashboard']);
     })->name('dashboard');
@@ -196,28 +205,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/customers/invoice', [CustomerController::class, 'invoice'])->name('admin.customers.invoice');
     Route::post('/customers/store', [CustomerController::class, 'store'])->name('admin.customers.store');
 
-
-
 //AI chat bot
 
     Route::get('/ai-chat', [AIChatbotController::class, 'index'])->name('admin.ai-chat.index');
     Route::post('/continue-chat', [AIChatbotController::class, 'continueChat'])->name('admin.ai-chat.continue');
+
+
+// profile pages
+    Route::get('/profile', [AdminController::class, 'index'])->name('profile');
+
 });
 
-//Authentication
-Route::get('/login', [AuthController::class, 'index'])->name('login.index');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // calender pages
 Route::get('/calendar', function () {
     return view('pages.calender', ['title' => 'Calendar']);
 })->name('calendar');
 
-// profile pages
-Route::get('/profile', function () {
-    return view('pages.profile', ['title' => 'Profile']);
-})->name('profile');
 
 // form pages
 Route::get('/form-elements', function () {
