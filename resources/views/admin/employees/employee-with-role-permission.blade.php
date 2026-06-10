@@ -23,12 +23,12 @@
                 <tr class="text-gray-600 dark:text-gray-300 border-b dark:border-gray-700">
                     <th>Employee Name</th>
                     <th>Role</th>
-                    <th>Permissions</th>
+{{--                    <th>Permissions</th>--}}
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                
+
             </tbody>
         </table>
     </div>

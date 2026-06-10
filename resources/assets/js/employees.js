@@ -24,12 +24,12 @@ $(function () {
         columns: [
             { data: 'name', name: 'name' },
             { data: 'role', orderable: false, searchable: false },
-            { data: 'permissions', orderable: false, searchable: false },
+            // { data: 'permissions', orderable: false, searchable: false },
             { data: 'action', orderable: false, searchable: false }
         ]
     });
-    
-    
+
+
     $('#employeesTable').DataTable({
         processing: true,
         serverSide: true,
@@ -55,16 +55,16 @@ $(function () {
             { data: 'action', orderable: false, searchable: false }
         ]
     });
-    
-    
-    
+
+
+
     $('#employeeForm').on('submit', function (e) {
             e.preventDefault();
-        
+
             const form = this;
             const formData = new FormData(form);
             const actionUrl = $(form).attr('action');
-        
+
             let method = $(form).find('input[name="_method"]').val() || 'POST';
             console.log("Form method:", method);
             Swal.fire({
@@ -72,7 +72,7 @@ $(function () {
                 allowOutsideClick: false,
                 didOpen: () => Swal.showLoading()
             });
-        
+
             $.ajax({
                 url: actionUrl,
                 method: "POST",
@@ -87,7 +87,7 @@ $(function () {
                 },
                 success: function (response) {
                     Swal.close();
-        
+
                     Swal.fire({
                         title: 'Success!',
                         text: response.message,
@@ -96,16 +96,16 @@ $(function () {
                         window.location.href = "/employees";
                     });
                 },
-        
+
                 error: function (xhr) {
                     Swal.close();
-        
+
                     let errorMsg = 'Something went wrong';
-        
+
                     if (xhr.responseJSON?.errors) {
                         errorMsg = Object.values(xhr.responseJSON.errors)[0][0];
                     }
-        
+
                     Swal.fire({
                         title: 'Error!',
                         text: errorMsg,
@@ -114,15 +114,15 @@ $(function () {
                 }
             });
     });
-    
-    
+
+
     $('#employeeRoleMappingForm').on('submit', function (e) {
             e.preventDefault();
-        
+
             const form = this;
             const formData = new FormData(form);
             const actionUrl = $(form).attr('action');
-        
+
             let method = $(form).find('input[name="_method"]').val() || 'POST';
             console.log("Form method:", method);
             Swal.fire({
@@ -130,7 +130,7 @@ $(function () {
                 allowOutsideClick: false,
                 didOpen: () => Swal.showLoading()
             });
-        
+
             $.ajax({
                 url: actionUrl,
                 method: "POST",
@@ -154,16 +154,16 @@ $(function () {
                         window.location.href = "/role-permission-mapping";
                     });
                 },
-        
+
                 error: function (xhr) {
                     Swal.close();
-        
+
                     let errorMsg = 'Something went wrong';
-        
+
                     if (xhr.responseJSON?.errors) {
                         errorMsg = Object.values(xhr.responseJSON.errors)[0][0];
                     }
-        
+
                     Swal.fire({
                         title: 'Error!',
                         text: errorMsg,
@@ -172,5 +172,5 @@ $(function () {
                 }
             });
     });
-        
+
 });

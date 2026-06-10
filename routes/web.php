@@ -15,7 +15,7 @@ use App\Http\Controllers\Admin\UnitsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AIChatbotController;
 use App\Http\Controllers\Admin\AdminController;
-
+use App\Http\Controllers\Admin\NotificationController;
 
 
 //Authentication
@@ -25,13 +25,12 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/auth/google/redirect', [AuthController::class, 'googleRedirect'])->name('auth.google.redirect');
 Route::get('/auth/google/callback', [AuthController::class, 'googleCallback'])->name('auth.google.callback');
 // dashboard pages
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:web')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/', function () {
         return view('pages.dashboard.ecommerce', ['title' => 'E-commerce Dashboard']);
     })->name('dashboard');
-
 
     Route::get('/roles', [RolesController::class, 'index'])->name('admin.roles');
     Route::get('/roles/create', [RolesController::class, 'create'])->name('admin.roles.create');
@@ -39,7 +38,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/roles/{role}/permissions', [RolesController::class, 'show'])->name('admin.add.permissions.to.role');
     Route::put('/roles/{role}/permissions', [RolesController::class, 'assignPermission'])->name('admin.roles.update-permissions');
     Route::get('/admin/roles/data', [RolesController::class, 'data'])->name('admin.roles.data');
-
+    Route::prefix('notifications')->name('notifications.')->group(function () {
+        Route::get('/',              [NotificationController::class, 'index'])->name('index');
+        Route::post('/{id}/read',    [NotificationController::class, 'markAsRead'])->name('read');
+        Route::post('/read-all',     [NotificationController::class, 'markAllAsRead'])->name('readAll');
+    });
 
 
     Route::get('/permissions', [PermisssionController::class, 'index'])->name('admin.permissions');
