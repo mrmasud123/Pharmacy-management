@@ -22,7 +22,7 @@ class ViewServiceProvider extends ServiceProvider
             }
             $view->with('notifications', $notifications);
             $view->with('unreadCount', $unreadCount);
-            $view->with('user', Auth::user());
+            $view->with('user', Auth::user()->load('roles'));
         });
     }
 }

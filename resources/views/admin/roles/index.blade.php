@@ -10,6 +10,7 @@
 
 <div class="bg-white dark:bg-white/3 rounded-xl shadow border p-4">
 
+
     <div class="flex mb-4">
         <a href="{{ route('admin.roles.create') }}"
            class="px-3 py-1.5 bg-blue-500 text-white rounded-lg ml-auto">
@@ -18,6 +19,7 @@
     </div>
 
     <div class="overflow-x-auto">
+
         <table id="rolesTable" class="datatable w-full text-left">
             <thead>
                 <tr class="text-gray-600 dark:text-gray-300 border-b dark:border-gray-700">
@@ -27,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-                
+
             </tbody>
         </table>
     </div>

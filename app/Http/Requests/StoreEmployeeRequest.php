@@ -36,7 +36,7 @@ class StoreEmployeeRequest extends FormRequest
                 'nullable',
                 'email:rfc,dns',
                 'max:150',
-                Rule::unique('employees', 'email')->ignore($employeeId),
+                Rule::unique('customers', 'email')->ignore($employeeId),
             ],
 
             'phone' => [
@@ -45,7 +45,7 @@ class StoreEmployeeRequest extends FormRequest
                 'max:11',
                 'min:11',
                 'starts_with:013,014,015,016,017,018,019',
-                Rule::unique('employees', 'phone')->ignore($employeeId),
+                Rule::unique('customers', 'phone')->ignore($employeeId),
             ],
 
             'designation' => [
@@ -161,7 +161,7 @@ class StoreEmployeeRequest extends FormRequest
         ]);
     }
 
- 
+
     public function validatedData(): array
     {
         $data = $this->validated();
@@ -177,7 +177,7 @@ class StoreEmployeeRequest extends FormRequest
             $data['employee_code'] = 'EMP-' . str_pad($nextId, 5, '0', STR_PAD_LEFT);
         }
 
-      
+
 
         if (!empty($data['password'])) {
 

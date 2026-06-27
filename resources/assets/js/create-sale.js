@@ -4,20 +4,20 @@ window.$ = window.jQuery = $;
 import TomSelect from 'tom-select';
 import 'tom-select/dist/css/tom-select.css';
 import 'datatables.net-dt';
-import 'datatables.net-dt/css/dataTables.dataTables.css';  
+import 'datatables.net-dt/css/dataTables.dataTables.css';
 
 
-$(function () { 
+$(function () {
     console.log("Create sale")
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
- 
+
     $('#saleForm').on('submit', function (e) {
         e.preventDefault();
-    
+
         const payload = {
             items:  collectItems(),
             total:  $('#grand_total').val(),
@@ -46,8 +46,8 @@ $(function () {
             success: function (res) {
                 console.log(res)
                 Swal.fire('Success', res.message, 'success')
-                    .then(() => window.location.href = '/sales');
-                
+                    .then(() => window.location.href = '/collections');
+
             },
             error: function (xhr) {
                 // Swal.fire('Error', xhr.responseJSON?.message || 'Sale failed', 'error');
@@ -62,7 +62,7 @@ $(function () {
             // }
         });
     });
- 
+
     let rowIndex = 0;
 
     function addRow() {
@@ -77,38 +77,38 @@ $(function () {
                 </select>
             </td>
 
- 
+
             <td class="p-2">
                 <input type="text" placeholder="Description"
                     name="items[${rowIndex}][desc]"
                     class="w-full input-style" />
             </td>
 
- 
+
             <td class="p-2">
                 <select name="items[${rowIndex}][batch_id]" class="batch_select w-full input-style">
                     <option value="" disabled selected>Select Batch</option>
                 </select>
             </td>
 
- 
+
             <td class="p-2">
                 <input type="number" value="0" readonly
                     class="available_qty w-full input-style bg-gray-100 dark:bg-gray-800" />
             </td>
 
- 
+
             <td class="p-2">
                 <input type="text" value="None" readonly
                     class="unit w-full input-style bg-gray-100 dark:bg-gray-800" />
             </td>
- 
+
             <td class="p-2">
                 <input type="number" value="1" min="1" max=""
                     name="items[${rowIndex}][qty]"
                     class="qty w-full input-style" />
             </td>
- 
+
             <td class="p-2">
                 <input type="number" value="0"
                     name="items[${rowIndex}][rate]"
@@ -116,25 +116,25 @@ $(function () {
                     class="rate w-full input-style" />
             </td>
 
-    
+
             <td class="p-2">
                 <input type="number" value="0" min="0" max="100"
                     name="items[${rowIndex}][discount]"
                     class="discount w-full input-style" />
             </td>
 
-    
+
             <td class="p-2">
                 <input type="number" value="0" min="0"
                     name="items[${rowIndex}][vat]"
                     class="vat w-full input-style" />
             </td>
- 
+
             <td class="p-2">
                 <input type="number" value="0" readonly
                     class="total w-full input-style bg-gray-100 dark:bg-gray-800" />
             </td>
- 
+
             <td class="p-2 text-center">
                 <button type="button" class="removeRow bg-red-500 text-white px-2 py-1 rounded">×</button>
             </td>
@@ -142,10 +142,10 @@ $(function () {
         </tr>`;
 
         $('#sale_items').append(row);
- 
+
         const newRow = $('#sale_items tr[data-row="' + rowIndex + '"]');
         const selectEl = newRow.find('.product_search')[0];
- 
+
         new TomSelect(selectEl, {
             valueField:  'id',
             labelField:  'name',
@@ -161,7 +161,7 @@ $(function () {
 
             onChange: function (productId) {
                 if (!productId) return;
- 
+
                 newRow.find('.batch_select').html('<option value="">Loading...</option>');
                 newRow.find('.available_qty').val(0);
                 newRow.find('.unit').val('None');
@@ -193,14 +193,14 @@ $(function () {
 
         rowIndex++;
     }
- 
+
     addRow();
- 
+
     $('#addRow').on('click', function () {
         addRow();
     });
- 
-    $(document).on('click', '.removeRow', function () { 
+
+    $(document).on('click', '.removeRow', function () {
         if ($('#sale_items tr').length === 1) {
             Swal.fire('Warning', 'At least one product row is required', 'warning');
             return;
@@ -208,7 +208,7 @@ $(function () {
         $(this).closest('tr').remove();
         calculateGrandTotal();
     });
- 
+
     $(document).on('change', '.batch_select', function () {
 
         const tr       = $(this).closest('tr');
@@ -220,11 +220,11 @@ $(function () {
 
         calculateRow(tr);
     });
- 
+
     $(document).on('input', '.qty, .rate, .discount, .vat', function () {
         calculateRow($(this).closest('tr'));
     });
- 
+
     function calculateRow(tr) {
 
         const qty      = parseFloat(tr.find('.qty').val())      || 0;
@@ -242,7 +242,7 @@ $(function () {
 
         calculateGrandTotal();
     }
- 
+
     function calculateGrandTotal() {
 
         let sum = 0;
@@ -253,7 +253,7 @@ $(function () {
 
         $('#grand_total').val(sum.toFixed(2));
     }
- 
+
     function collectItems() {
 
         const items = [];
@@ -262,7 +262,7 @@ $(function () {
             const tr        = $(this);
             const productId = tr.find('[name*="product_id"]').val();
             const batchId   = tr.find('.batch_select').val();
- 
+
             if (!productId || !batchId) return;
 
             items.push({
@@ -279,31 +279,31 @@ $(function () {
 
         return items;
     }
-    
-    
 
-    
+
+
+
     $(document).on('click', '#addCustomerBtn', function () {
 
         Swal.fire({
             title: '<span class="text-lg font-semibold text-gray-800">Add Customer</span>',
             html: `
                 <div class="space-y-4 text-left">
-    
+
                     <div>
                         <label class="block text-sm font-medium text-gray-600 mb-1">Name *</label>
                         <input type="text" id="cust_name"
                             class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none text-sm"
                             placeholder="Enter customer name">
                     </div>
-    
+
                     <div>
                         <label class="block text-sm font-medium text-gray-600 mb-1">Phone</label>
                         <input type="tel" oninput="this.value = this.value.replace(/[^0-9]/g, '')" id="cust_phone"
                             class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none text-sm"
                             placeholder="Enter phone number">
                     </div>
-    
+
                     <div>
                         <label class="block text-sm font-medium text-gray-600 mb-1">Address</label>
                         <textarea id="cust_address"
@@ -311,7 +311,7 @@ $(function () {
                             rows="3"
                             placeholder="Enter address"></textarea>
                     </div>
-    
+
                 </div>
             `,
             showCancelButton: true,
@@ -323,21 +323,21 @@ $(function () {
                 confirmButton: 'bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm font-medium mr-2',
                 cancelButton: 'bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium'
             },
-    
+
             showLoaderOnConfirm: true,
             allowOutsideClick: () => !Swal.isLoading(),
-    
+
             preConfirm: () => {
-    
+
                 let name = $('#cust_name').val();
                 let phone = $('#cust_phone').val();
                 let address = $('#cust_address').val();
-    
+
                 if (!name) {
                     Swal.showValidationMessage('Name is required');
                     return false;
                 }
-    
+
                 // Return AJAX Promise (IMPORTANT FIX)
                 return $.ajax({
                     url: '/customers/store',
@@ -351,33 +351,33 @@ $(function () {
                 }).then(function (res) {
                     return res;
                 }).catch(function (xhr) {
-    
+
                     if (xhr.status === 422) {
-    
+
                         let errors = xhr.responseJSON.errors;
-    
+
                         let errorMsg = Object.values(errors)
                             .map(err => err[0])
                             .join('<br>');
-    
+
                         Swal.showValidationMessage(errorMsg);
                     } else {
                         Swal.showValidationMessage('Something went wrong');
                     }
-    
+
                     return false;
                 });
             }
-    
+
         }).then((result) => {
-    
+
             if (result.isConfirmed && result.value) {
-    
+
                 let res = result.value;
-    
-          
+
+
                 $('input[name="customer"]').val(res.data.name);
-    
+
                 Swal.fire({
                     icon: 'success',
                     title: 'Customer Added',
@@ -386,31 +386,31 @@ $(function () {
                 });
             }
         });
-    
+
     });
-    
+
     let customerSelect = new TomSelect("#customerSelect", {
             valueField: "id",
             labelField: "name",
             searchField: ["name", "phone"],
             placeholder: "Search customer...",
-            
+
             load: function(query, callback) {
                 if (!query.length) return callback();
-        
+
                 $.ajax({
                     url: "/customers/search",
                     type: "GET",
                     data: { q: query },
                     success: function(res) {
-                        callback(res.data);  
+                        callback(res.data);
                     },
                     error: function() {
                         callback();
                     }
                 });
             },
-        
+
             render: {
                 option: function(item, escape) {
                     return `

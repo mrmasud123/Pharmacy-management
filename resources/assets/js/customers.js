@@ -11,7 +11,7 @@ $(function () {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '/employees/with/roles/permissions/data',
+            url: '/users/with/roles/permissions/data',
             type: 'GET',
             dataSrc: function (json) {
                 console.log("DataTables response:", json);
@@ -30,12 +30,12 @@ $(function () {
     });
 
 
-    $('#employeesTable').DataTable({
+    $('#customersTable').DataTable({
         processing: true,
         serverSide: true,
         searching:true,
         ajax: {
-            url: 'admin/employee/data',
+            url: 'admin/customer/data',
             type: 'GET',
             dataSrc: function (json) {
                 console.log("DataTables response:", json);
@@ -47,10 +47,7 @@ $(function () {
         },
         columns: [
             { data: 'name', name: 'name' },
-            { data: 'employee_code', orderable: false, searchable: false },
-            { data: 'designation', orderable: false, searchable: false },
-            { data: 'join_date', orderable: false, searchable: false },
-            { data: 'email', orderable: false, searchable: false },
+
             { data: 'phone', orderable: false, searchable: false },
             { data: 'action', orderable: false, searchable: false }
         ]
@@ -93,7 +90,7 @@ $(function () {
                         text: response.message,
                         icon: 'success'
                     }).then(() => {
-                        window.location.href = "/employees";
+                        window.location.href = "/customers";
                     });
                 },
 

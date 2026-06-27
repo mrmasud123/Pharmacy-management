@@ -10,7 +10,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Product;
 
 use App\Models\ProductBatch;
- 
+
 use App\Models\Sale;
 
 class SalesController extends Controller
@@ -61,19 +61,19 @@ class SalesController extends Controller
         return view('admin.sales.sales', compact('sales'));
     }
     public function create( ){
-       
+
         return view('admin.sales.sales-form');
-        
+
     }
     public function collection(){
-        
+
     }
     public function invoiceWiseCollection(){
-        
+
     }
     public function store(StoreSaleRequest $request, SaleService $service)
     {
-        
+
         $data=$request->validated();
         // return $data;
         $sale = $service->createSale($data);
@@ -88,12 +88,12 @@ class SalesController extends Controller
         $sale->load(['items.product', 'customer']);
         return view('admin.sales.saledetails', compact('sale'));
     }
-    
+
     public function edit(){}
-    
+
     public function delete(){}
-    
-    
+
+
     public function getProducts(Request $request)
     {
         $products = Product::where('name', 'like', '%' . $request->q . '%')
@@ -112,12 +112,12 @@ class SalesController extends Controller
 
         return response()->json($batches);
     }
-    
+
     public function invoices($id){
-        
+
     }
-    
-    
+
+
     public function data(Request $request)
 {
     $query = Sale::query()
@@ -134,7 +134,7 @@ class SalesController extends Controller
 
         ->with('customer:id,name,phone')
         ->withCount('items')
-
+        ->where('customer_id', '!=', null)
         ->when($request->filled('customer_id'), function ($q) use ($request) {
             $q->where('customer_id', $request->customer_id);
         })
@@ -192,7 +192,7 @@ class SalesController extends Controller
                         '.$due.'
                     </span>
                 ';
-                
+
             }
 
             return '

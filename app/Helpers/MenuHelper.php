@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Illuminate\Support\Facades\Auth;
+
 class MenuHelper
 {
     public static function getMainNavItems()
@@ -22,8 +24,8 @@ class MenuHelper
             ],
             [
                 'icon' => 'lucide:users',
-                'name' => 'Employees',
-                'path' => '/employees',
+                'name' => 'Customers',
+                'path' => '/customers',
             ],
             [
                 'icon' => 'lucide:shield-check',
@@ -31,14 +33,20 @@ class MenuHelper
                 'subItems' => [
                     ['icon' => 'lucide:shield', 'name' => 'Roles', 'path' => '/roles', 'pro' => false],
                     ['icon' => 'lucide:lock', 'name' => 'Permissions', 'path' => '/permissions', 'pro' => false],
-                    ['icon' => 'lucide:users', 'name' => 'Role Permission Mapping', 'path' => '/role-permission-mapping', 'pro' => false]
+                    [
+                        'icon' => 'lucide:users',
+                        'name' => 'Role Permission Mapping',
+                        'path' => '/role-permission-mapping',
+                        'permissions' =>['employee-mapping'],
+                        'pro' => false
+                    ]
                 ]
             ],
             [
                 'icon' => 'lucide:shopping-cart',
                 'name' => 'Sales',
                 'subItems' => [
-                    ['icon' => 'lucide:receipt', 'name' => 'Sale list', 'path' => '/sales'],
+//                    ['icon' => 'lucide:receipt', 'name' => 'Sale list', 'path' => '/sales'],
                     ['icon' => 'lucide:plus-circle', 'name' => 'New sale', 'path' => '/sales-create'],
                     ['icon' => 'lucide:credit-card', 'name' => 'Collection', 'path' => '/collections'],
                     ['icon' => 'lucide:file-text', 'name' => 'Invoice wise collection', 'path' => '/invoice-wise-collection'],
@@ -62,39 +70,8 @@ class MenuHelper
                 'icon' => 'lucide:astroid',
                 'name' => 'AI Chat',
                 'path' => '/ai-chat',
+                'roles' => ['owner']
             ],
-//            [
-//                'icon' => 'calendar',
-//                'name' => 'Calendar',
-//                'path' => '/calendar',
-//            ],
-//            [
-//                'icon' => 'user-profile',
-//                'name' => 'User Profile',
-//                'path' => '/profile',
-//            ],
-//            [
-//                'name' => 'Forms',
-//                'icon' => 'forms',
-//                'subItems' => [
-//                    ['name' => 'Form Elements', 'path' => '/form-elements', 'pro' => false],
-//                ],
-//            ],
-//            [
-//                'name' => 'Tables',
-//                'icon' => 'tables',
-//                'subItems' => [
-//                    ['name' => 'Basic Tables', 'path' => '/basic-tables', 'pro' => false]
-//                ],
-//            ],
-//            [
-//                'name' => 'Pages',
-//                'icon' => 'pages',
-//                'subItems' => [
-//                    ['name' => 'Blank Page', 'path' => '/blank', 'pro' => false],
-//                    ['name' => '404 Error', 'path' => '/error-404', 'pro' => false]
-//                ],
-//            ],
         ];
     }
 
@@ -137,13 +114,57 @@ class MenuHelper
         return [
             [
                 'title' => '',
-                'items' => self::getMainNavItems()
+                'items' => self::filterMenuItems(self::getMainNavItems())
             ],
             [
                 'title' => '',
                 'items' => self::getOthersItems()
             ]
         ];
+    }
+
+    private static function filterMenuItems(array $menus): array
+    {
+        $user = Auth::user();
+
+        return collect($menus)
+            ->map(function ($menu) use ($user) {
+                if (isset($menu['subItems'])) {
+                    $menu['subItems'] = self::filterMenuItems($menu['subItems']);
+                }
+
+                return $menu;
+            })
+            ->filter(function ($menu) use ($user) {
+
+                if (isset($menu['roles'])) {
+                    $hasRole = collect($menu['roles'])
+                        ->contains(fn ($role) => $user->hasRole($role));
+
+                    if (!$hasRole) {
+                        return false;
+                    }
+                }
+                if (isset($menu['permissions'])) {
+                    $hasPermission = $user &&
+                        collect($menu['permissions'])->contains(
+                            fn ($permission) => $user->hasPermissionTo($permission)
+                        );
+
+                    if (!$hasPermission) {
+                        return false;
+                    }
+                }
+
+
+                if (isset($menu['subItems'])) {
+                    return count($menu['subItems']) > 0;
+                }
+
+                return true;
+            })
+            ->values()
+            ->toArray();
     }
 
     public static function isActive($path)

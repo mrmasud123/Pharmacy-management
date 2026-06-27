@@ -4,7 +4,6 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
-use App\Http\Controllers\Admin\EmployeesController;
 use App\Http\Controllers\Admin\PermisssionController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductTypeController;
@@ -16,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AIChatbotController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\NotificationController;
-
+use App\Http\Controllers\Admin\DueCollectionController;
 
 //Authentication
 Route::get('/login', [AuthController::class, 'index'])->name('login.index');
@@ -151,41 +150,40 @@ Route::middleware('auth:web')->group(function () {
     Route::post('/admin/category/status/{id}', [CategoryController::class, 'updateStatus']);
 
 
-// Employees
-    Route::get('/employees', [EmployeesController::class, 'employees'])
-        ->name('admin.employees.manage');
+// Customers
+    Route::get('/customers', [CustomerController::class, 'customers'])
+        ->name('admin.customers.manage');
 
-    Route::get('/role-permission-mapping', [EmployeesController::class, 'rolePermissionMapping'])
-        ->name('role.permission.mapping');
+    Route::get('/role-permission-mapping', [CustomerController::class, 'rolePermissionMapping'])
+        ->name('role.permission.mapping')->middleware('role:admin');
 
     Route::post('/role-permission-mapping/store',
-        [EmployeesController::class, 'storeMapping']
+        [CustomerController::class, 'storeMapping']
     )->name('role.permission.mapping.store');
 
-    Route::get('/employees/with/roles/permissions/data', [EmployeesController::class, 'employeesWithRolesPermissionData'])->name('admin.employees.with.roles.permissions.data');
-
-    Route::get('/employees/create', [EmployeesController::class, 'createEmployee'])
-        ->name('admin.employees.create');
-
-    Route::post('/employees', [EmployeesController::class, 'storeEmployee'])
-        ->name('admin.employee.store');
-
-    Route::get('/employees/{employee}/edit', [EmployeesController::class, 'editEmployee'])
-        ->name('admin.employees.edit');
-
-    Route::put('/employees/{employee}', [EmployeesController::class, 'updateEmployee'])
-        ->name('admin.employee.update');
-
-    Route::get('/role-permission-mapping/map/{employee}', [EmployeesController::class, 'assignEmployeeRole'])
+    Route::get('/users/with/roles/permissions/data', [CustomerController::class, 'userWithRolesPermissionData'])->name('admin.customers.with.roles.permissions.data');
+    Route::get('/role-permission-mapping/map/{user}', [CustomerController::class, 'assignEmployeeRole'])
         ->name('admin.assign.role');
 
-    Route::delete('/employees/{employee}', [EmployeesController::class, 'deleteEmployee'])
-        ->name('admin.employees.destroy');
+    Route::get('/customers/create', [CustomerController::class, 'createCustomer'])
+        ->name('admin.customers.create');
 
-    Route::get('/admin/employee/data', [EmployeesController::class, 'data'])
-        ->name('admin.employee.data');
+    Route::post('/customers', [CustomerController::class, 'storeCustomer'])
+        ->name('admin.employee.store');
 
-    Route::post('/admin/employee/status/{id}', [EmployeesController::class, 'updateStatus']);
+    Route::get('/customers/{customer}/edit', [CustomerController::class, 'editCustomer'])
+        ->name('admin.customers.edit');
+
+    Route::put('/customers/{customer}', [CustomerController::class, 'updateCustomer'])
+        ->name('admin.customer.update');
+
+    Route::delete('/customers/{customer}', [CustomerController::class, 'deleteCustomer'])
+        ->name('admin.customers.destroy');
+
+    Route::get('/admin/customer/data', [CustomerController::class, 'data'])
+        ->name('admin.customer.data');
+
+    Route::post('/admin/customer/status/{id}', [CustomerController::class, 'updateStatus']);
 
 //products
     Route::get('/products', [ProductController::class, 'products'])->name('admin.products.manage');
@@ -195,28 +193,34 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/products/delete', [ProductController::class, 'deleteProduct'])->name('admin.product.destroy');
     Route::post('/products', [ProductController::class, 'storeProduct'])->name('admin.product.store');
     Route::put('/products/{product}', [ProductController::class, 'updateProduct'])->name('admin.product.update');
-// Route::delete('/products/{product}', [ProductController::class, 'deleteProduct'])->name('admin.product.destroy');
-// Route::get('/stock/products/{product}/create', [ProductController::class, 'addStock'])->name('admin.product.stock.create');
     Route::get('/products/stock/{product}/create', [ProductController::class, 'addStock'])->name('admin.product.stock.create');
     Route::get('/products/{product}/batches', [ProductController::class, 'viewStock'])->name('admin.product.batches.view');
     Route::post('/products/stock/{product}/store', [ProductController::class, 'storeStock'])->name('admin.product.stock.store');
 
-// Route::post('/stock/products/{product}/store', [ProductController::class, 'storeStock'])->name('admin.product.stock.store');
-
-//Customers
+    //Customers
     Route::get('/customers/search', [CustomerController::class, 'search'])->name('admin.customers.search');
     Route::get('/customers/invoice', [CustomerController::class, 'invoice'])->name('admin.customers.invoice');
     Route::post('/customers/store', [CustomerController::class, 'store'])->name('admin.customers.store');
 
-//AI chat bot
+    //AI chat bot
 
     Route::get('/ai-chat', [AIChatbotController::class, 'index'])->name('admin.ai-chat.index');
     Route::post('/continue-chat', [AIChatbotController::class, 'continueChat'])->name('admin.ai-chat.continue');
 
 
-// profile pages
+    // profile pages
     Route::get('/profile', [AdminController::class, 'index'])->name('profile');
 
+    // Due collection
+    Route::get('/collections', [DueCollectionController::class, 'index'])->name('admin.due.collections');
+    Route::get('/due-collections/data', [DueCollectionController::class, 'data'])->name('admin.due.collection.data');
+    Route::get('/collections/customers-invoices/{customer}', [DueCollectionController::class, 'customerInvoices'])->name('admin.collections.customers.invoices');
+    Route::post('invoice/{sale}/pay-due', [DueCollectionController::class, 'payDue'])->name('admin.invoice.sales.pay-due');
+
+    Route::get('/collections/invoice/{sale}/edit', [DueCollectionController::class, 'edit'])->name('admin.invoice.edit');
+    Route::put('sales/{sale}', [DueCollectionController::class, 'update'])->name('admin.sales.update');
+
+    Route::get('/collections/payment-history/{customer}', [DueCollectionController::class, 'paymentHistory'])->name('admin.collections.payment.history');
 });
 
 

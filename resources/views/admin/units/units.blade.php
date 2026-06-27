@@ -15,11 +15,13 @@
         <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
             Manage Units
         </h2>
+        @can('measurement.view')
 
-        <a href="{{ route('admin.unit.create') }}"
-           class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg shadow transition">
-            + Add Unit
-        </a>
+            <a href="{{ route('admin.unit.create') }}"
+               class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg shadow transition">
+                + Add Unit
+            </a>
+        @endcan
     </div>
 
     <!-- Table -->

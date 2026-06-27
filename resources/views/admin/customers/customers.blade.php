@@ -1,37 +1,34 @@
 @extends('layouts.app')
 
 @section('custom-scripts')
-    @vite(['resources/assets/js/employees.js'])
+    @vite(['resources/assets/js/customers.js'])
 @endsection
 
 @section('content')
 
-<x-common.page-breadcrumb :pageTitle="[['name' => 'Employees', 'link'=> '#']]" />
+<x-common.page-breadcrumb :pageTitle="[['name' => 'Customers', 'link'=> '#']]" />
 
 <div class="bg-white dark:bg-white/3 rounded-xl shadow p-4">
 
     <div class="flex mb-4">
-        <a href="{{ route('admin.employees.create') }}"
+        <a href="{{ route('admin.customers.create') }}"
            class="px-3 py-1.5 bg-blue-500 text-white rounded-lg ml-auto">
-            Add Employee
+            Add Customers
         </a>
     </div>
 
     <div class="overflow-x-auto">
-        <table id="employeesTable" class="datatable w-full text-left">
+        <table id="customersTable" class="datatable w-full text-left">
             <thead>
                 <tr class="text-gray-600 dark:text-gray-300 border-b dark:border-gray-700">
-                    <th>Employee Name</th>
-                    <th>Employee Code</th>
-                    <th>Designation</th>
-                    <th>Join Date</th>
-                    <th>E-mail</th>
+                    <th>Customers Name</th>
+
                     <th>Phone</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                
+
             </tbody>
         </table>
     </div>

@@ -2,12 +2,12 @@
 
 @section('custom-scripts')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    @vite(['resources/assets/js/employees.js'])
+    @vite(['resources/assets/js/customers.js'])
 @endsection
 
 @section('content')
 
-<x-common.page-breadcrumb :pageTitle="[['name' => 'Employees', 'link'=> '#']]" />
+<x-common.page-breadcrumb :pageTitle="[['name' => 'User', 'link'=> '#']]" />
 
 <div class="bg-white dark:bg-white/3 rounded-xl shadow p-4">
 
@@ -20,7 +20,7 @@
 
     <form id="employeeRoleMappingForm" action="{{ route('role.permission.mapping.store') }}" method="POST">
         @csrf
-        <input type="text" hidden name="employee_id" value="{{ $employee->id }}">
+        <input type="text" hidden name="user_id" value="{{ $user->id }}">
         {{-- Employee Info Card --}}
         <div
             class="mb-6 overflow-hidden rounded-2xl border border-gray-200 bg-linear-to-r from-blue-50 to-indigo-50 shadow-sm dark:border-gray-700 dark:from-gray-900 dark:to-gray-800">
@@ -34,19 +34,19 @@
                     <div
                         class="flex h-16 w-16 items-center justify-center rounded-full bg-blue-600 text-2xl font-bold text-white shadow">
 
-                        {{ strtoupper(substr($employee->name, 0, 1)) }}
+                        {{ strtoupper(substr($user->name, 0, 1)) }}
                     </div>
- 
+
                     <div>
 
                         <h2 class="text-xl font-semibold text-gray-800 dark:text-white">
-                            {{ $employee->name }}
+                            {{ $user->name }}
                         </h2>
 
                         <div
                             class="mt-1 flex flex-col gap-1 text-sm text-gray-600 dark:text-gray-300 md:flex-row md:items-center md:gap-4">
                             <span>
-                                <strong>Email:</strong> {{ $employee->email ?? 'N/A' }}
+                                <strong>Email:</strong> {{ $user->email ?? 'N/A' }}
                             </span>
 
                         </div>
@@ -64,7 +64,7 @@
 
                     <div class="flex flex-wrap gap-2">
 
-                        @forelse($employee->roles as $role)
+                        @forelse($user->roles as $role)
 
                             <span
                                 class="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700 dark:bg-green-900/40 dark:text-green-300">
@@ -95,7 +95,7 @@
     @foreach($roles as $role)
 
         @php
-            $isAssigned = $employee->roles->contains('id', $role->id);
+            $isAssigned = $user->roles->contains('id', $role->id);
         @endphp
 
         <label class="block cursor-pointer">

@@ -18,74 +18,74 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
-    
+
     public function __construct(protected ProductService $productService){}
-    public function products(){        
+    public function products(){
         return view('admin.products.products');
     }
-    
+
     public function createProduct(){
         $brands = collect(Brand::all());
-        
+
         $types = collect(ProductType::all());
-        
+
         $categories = collect(Category::all());
-        
+
         $suppliers = collect(Supplier::all());
-    
+
         return view('admin.products.form', compact('brands','types','categories','suppliers'));
     }
-    
+
     public function editProduct(Product $product){
         $brands = collect(Brand::all());
-        
+
         $types = collect(ProductType::all());
-        
+
         $categories = collect(Category::all());
-        
+
         $suppliers = collect(Supplier::all());
         return view('admin.products.form', compact('product', 'brands', 'types', 'categories', 'suppliers'));
     }
-    
+
     public function storeProduct(StoreProductRequest $request){
-        
+
         $data = $request->validated();
-        
+
         $product=$this->productService->createProduct($data);
-        
+
         if($request->hasFile('image')){
             $product->addMediaFromRequest('image')->toMediaCollection('products', 'public');
         }
-        
+
         return redirect()->route('admin.products.manage')->with('success', 'Product created successfully.');
     }
-    
+
     public function createProductStock(){}
-    
+
     public function addStock(Product $product)
     {
         $suppliers = Supplier::all();
-        $units = Unit::all();  
+        $units = Unit::all();
         return view('admin.products.add-stock', compact('product', 'suppliers', 'units'));
     }
-    
+
     public function storeStock(StoreBatchProductRequest $request, $productId)
     {
         $this->productService->addToBatch($request->validated(), $productId);
-        
+
         return redirect()
             ->route('admin.products.manage')
             ->with('success', 'Stock added successfully');
     }
-    
-    
+
+
     public function viewStock($productId)
     {
         $product = Product::with('batches.supplier', 'batches.unit')->findOrFail($productId);
 
         return view('admin.products.view-stock', compact('product'));
     }
-    
+
     public function data()
     {
         return DataTables::of(
@@ -100,8 +100,11 @@ class ProductController extends Controller
                     'product_type_id'
                 ])
                 ->with(['brand', 'category', 'productType'])
+            ->withCount('batches')
         )
-
+    ->addColumn('batches_count', function($product){
+        return $product->batches_count;
+    })
         ->addColumn('brand', function ($product) {
             return $product->brand?->name ?? 'N/A';
         })
@@ -120,7 +123,8 @@ class ProductController extends Controller
 
         ->addColumn('action', function ($product) {
             return '
-                <div class="flex items-center gap-2">
+
+                <div class="flex justify-end items-center gap-2">
 
                     <a href="' . route('admin.product.edit', $product->id) . '"
                     class="flex items-center p-2 text-blue-600 hover:bg-blue-50 rounded-md transition"
@@ -132,12 +136,12 @@ class ProductController extends Controller
                     <a href="' . route('admin.product.stock.create', $product->id) . '"
                     class="flex items-center p-2 text-emerald-600 hover:bg-emerald-50 rounded-md transition"
                     title="Add Stock">
-                        <span class="iconify me-1" data-icon="lucide:package-plus"></span>Add Stock
+                        <span class="iconify me-1" data-icon="lucide:package-plus"></span>Add Batch
                     </a>
                     <a href="' . route('admin.product.batches.view', $product->id) . '"
                     class="flex items-center p-2 text-blue-600 hover:bg-blue-50 rounded-md transition"
                     title="View Stock">
-                        <span class="iconify me-1" data-icon="lucide:eye"></span>View Stock
+                        <span class="iconify me-1" data-icon="lucide:eye"></span>View Batches
                     </a>
 
                     <button class="flex items-center p-2 text-red-600 hover:bg-red-50 rounded-md transition deleteBtn"

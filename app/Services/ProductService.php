@@ -20,9 +20,9 @@ class ProductService
         $product->update($data);
         return $product;
     }
-    
+
     //Batch product creation with stock movement
-    
+
     public function addToBatch(array $data, int $productId): ProductBatch
     {
         return DB::transaction(function () use ($data, $productId) {
@@ -38,12 +38,12 @@ class ProductService
                 'supplier_id'     => $data['supplier_id'] ?? null,
                 'unit_id'         => $data['unit_id'] ?? null,
                 'batch_no'        => $data['batch_no'],
-                // 'expire_date'     => $data['expire_date'],
+                'expire_date'     => $data['expire_date'],
                 'purchase_price'  => $data['purchase_price'],
                 'sales_price'     => $data['sales_price'],
                 'quantity'        => $data['quantity'],
             ]);
- 
+
             // Record stock movement
             StockMovement::create([
                 'product_id'        => $productId,

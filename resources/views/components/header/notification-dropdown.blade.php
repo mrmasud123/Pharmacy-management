@@ -10,8 +10,8 @@
         this.dropdownOpen = false;
     },
     handleItemClick() {
-        console.log('Notification item clicked');
         this.closeDropdown();
+        console.log('Notification item clicked');
     },
     handleViewAllClick() {
         console.log('View All Notifications clicked');

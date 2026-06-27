@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     protected $guarded = [];
+    protected $table = 'customers';
+
+    public function sales() {
+        return $this->hasMany(Sale::class);
+    }
 }

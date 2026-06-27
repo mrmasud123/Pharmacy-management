@@ -2,85 +2,96 @@
 
 namespace App\Services;
 
+use App\Models\Customer;
 use App\Models\ProductBatch;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use App\Models\StockMovement;
-use Exception;
 use Illuminate\Support\Facades\DB;
 
 class SaleService
 {
+    public function __construct(
+        protected TransactionService $transactionService
+    ) {}
+
     public function createSale(array $data): Sale
     {
         return DB::transaction(function () use ($data) {
-    
-            $subtotal       = 0;
-            $totalDiscount  = 0;
-            $totalTax       = 0;
-    
+
+            $subtotal      = 0;
+            $totalDiscount = 0;
+            $totalTax      = 0;
+
             $preparedItems = [];
-     
+
             foreach ($data['items'] as $item) {
-    
+
                 $batch = ProductBatch::lockForUpdate()->findOrFail($item['batch_id']);
-    
+
                 $qty      = (float) $item['qty'];
                 $rate     = (float) $item['rate'];
-                $discount = (float) ($item['discount'] ?? 0); 
-                $vat      = (float) ($item['vat'] ?? 0);      
-    
+                $discount = (float) ($item['discount'] ?? 0);
+                $vat      = (float) ($item['vat'] ?? 0);
+
                 if ($batch->quantity < $qty) {
                     throw new \Exception("Insufficient stock for batch ID {$batch->id}");
                 }
-    
-                $lineSubtotal  = $qty * $rate;
-    
+
+                $lineSubtotal = $qty * $rate;
+
                 $discountAmt   = $lineSubtotal * ($discount / 100);
                 $afterDiscount = $lineSubtotal - $discountAmt;
-    
-                $vatAmt        = $afterDiscount * ($vat / 100);
-    
-                $lineTotal     = $afterDiscount + $vatAmt;
-    
+
+                $vatAmt = $afterDiscount * ($vat / 100);
+
+                $lineTotal = $afterDiscount + $vatAmt;
+
                 $subtotal      += $lineSubtotal;
                 $totalDiscount += $discountAmt;
                 $totalTax      += $vatAmt;
-    
+
                 $preparedItems[] = [
-                    'product_id'       => $item['product_id'],
-                    'batch_id'         => $batch->id,
-                    'qty'              => $qty,
-                    'rate'             => $rate,
-                    'discount_amt'     => $discountAmt,
-                    'tax_amt'          => $vatAmt,
-                    'total'            => $lineTotal,
+                    'product_id'   => $item['product_id'],
+                    'batch_id'     => $batch->id,
+                    'qty'          => $qty,
+                    'rate'         => $rate,
+                    'discount_amt' => $discountAmt,
+                    'tax_amt'      => $vatAmt,
+                    'total'        => $lineTotal,
                 ];
             }
-    
+
             $grandTotal = $subtotal - $totalDiscount + $totalTax;
-    
+
             $paid = (float) ($data['paid'] ?? 0);
-            $due  = $grandTotal - $paid;
-    
+
+            if ($paid > $grandTotal) {
+                throw new \Exception(
+                    "Paid amount (" . number_format($paid, 2) . ") cannot exceed the grand total (" . number_format($grandTotal, 2) . ")."
+                );
+            }
+
+            $due = $grandTotal - $paid;
+
             $sale = Sale::create([
-                'invoice_no'  => $this->generateInvoice(),
-    
+                'invoice_no' => $this->generateInvoice(),
+
                 'total'       => round($subtotal, 2),
                 'discount'    => round($totalDiscount, 2),
                 'tax'         => round($totalTax, 2),
                 'grand_total' => round($grandTotal, 2),
-    
-                'paid'        => round($paid, 2),
-                'due'         => round($due, 2),
-    
+
+                'paid' => round($paid, 2),
+                'due'  => round($due, 2),
+
                 'status'      => 'completed',
                 'customer_id' => $data['customer_id'] ?? null,
                 'sale_date'   => $data['sale_date'] ?? date('Y-m-d'),
             ]);
-    
+
             foreach ($preparedItems as $item) {
-    
+
                 SaleItem::create([
                     'sale_id'          => $sale->id,
                     'product_id'       => $item['product_id'],
@@ -91,10 +102,10 @@ class SaleService
                     'tax'              => $item['tax_amt'],
                     'total'            => $item['total'],
                 ]);
-    
+
                 $batch = ProductBatch::find($item['batch_id']);
                 $batch->decrement('quantity', $item['qty']);
-    
+
                 StockMovement::create([
                     'product_id'       => $item['product_id'],
                     'product_batch_id' => $item['batch_id'],
@@ -104,10 +115,35 @@ class SaleService
                     'reference'        => $sale->invoice_no,
                 ]);
             }
-    
+
+            if (!empty($data['customer_id'])) {
+                $customer = Customer::lockForUpdate()->findOrFail($data['customer_id']);
+
+                $this->transactionService->record(
+                    customer: $customer,
+                    type: 'sale_payment',
+                    direction: 'debit',
+                    amount: $grandTotal,
+                    transactionable: $sale,
+                    note: "Invoice {$sale->invoice_no} created — total owed " . number_format($grandTotal, 2)
+                );
+
+                if ($paid > 0) {
+                    $this->transactionService->record(
+                        customer: $customer,
+                        type: 'sale_payment',
+                        direction: 'credit',
+                        amount: $paid,
+                        transactionable: $sale,
+                        note: "Payment received at sale creation for {$sale->invoice_no}"
+                    );
+                }
+            }
+
             return $sale;
         });
     }
+
     private function generateInvoice(): string
     {
         $date = now()->format('Ymd');

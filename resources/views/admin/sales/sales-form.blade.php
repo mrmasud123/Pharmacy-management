@@ -28,7 +28,7 @@
                 Customer Name/Phone *
             </label>
 
-            <div class="flex gap-2"> 
+            <div class="flex gap-2">
                     <select id="customerSelect" name="customer_id" placeholder="Search customer..." class="w-100" ></select>
 
                     <button type="button" id="addCustomerBtn" class="bg-green-600 text-white px-3 rounded">+</button>
@@ -40,21 +40,21 @@
                 <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">
                     Sale date *
                 </label>
-        
-                <x-form.date-picker 
-                    id="date_pick" 
+
+                <x-form.date-picker
+                    id="date_pick"
                     name="sale_date"
-                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
-                              bg-white dark:bg-gray-800 
+                    class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                              bg-white dark:bg-gray-800
                               text-gray-800 dark:text-gray-100"
                        required
-                    placeholder="Date Picker" 
-                    defaultDate="{{ now()->format('Y-m-d') }}" 
+                    placeholder="Date Picker"
+                    defaultDate="{{ now()->format('Y-m-d') }}"
                 />
             </div>
     </div>
-    <form action="" id="saleForm"> 
-        <!-- POS Table --> 
+    <form action="" id="saleForm">
+        <!-- POS Table -->
         <div class="overflow-visible border border-gray-200 dark:border-gray-700 rounded-lg">
             <div class="mb-3 p-3">
                 <button type="button" id="addRow"
@@ -62,7 +62,7 @@
                     + Add Product
                 </button>
             </div>
-            
+
             <table class="w-full text-sm text-left">
                 <thead class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
                     <tr>
@@ -73,30 +73,30 @@
                         <th class="p-2">Unit</th>
                         <th class="p-2">Qty *</th>
                         <th class="p-2">Rate *</th>
-                        <th class="p-2">Discount %</th> 
-                        <th class="p-2">VAT %</th> 
+                        <th class="p-2">Discount %</th>
+                        <th class="p-2">VAT %</th>
                         <th class="p-2">Total</th>
                         <th class="p-2">Action</th>
                     </tr>
                 </thead>
-                
+
                 <tbody id="sale_items">
 
                 </tbody>
 
             </table>
-    
+
         </div>
-        
+
         <div class="mt-4 flex justify-end">
             <div class="w-full max-w-sm bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 shadow-sm">
-        
+
                 <div class="flex justify-between items-center mb-2">
                     <span class="text-md text-gray-600 dark:text-gray-300">Grand Total</span>
                     <input type="number" id="grand_total" readonly
                         class="w-32 text-right font-semibold text-lg bg-transparent border-none focus:ring-0 text-gray-900 dark:text-white">
                 </div>
-        
+
             </div>
         </div>
         <!-- Sale Details -->
@@ -129,7 +129,7 @@
                     Paid Amount
                 </label>
 
-                <input name="paid" type="number" placeholder="0.00"
+                <input name="paid" type="number" step="any" placeholder="0.00"
                     class="w-full input-style" />
             </div>
 
@@ -141,7 +141,7 @@
                 Save Sale
             </button>
         </div>
-        
+
     </form>
 
 </div>

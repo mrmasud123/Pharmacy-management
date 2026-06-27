@@ -16,7 +16,7 @@ class CustomerController extends Controller
         $customers = Customer::query()
             ->when($query, function ($q) use ($query) {
                 $q->where('name', 'like', "%{$query}%")
-                  ->orWhere('phone', 'like', "%{$query}%");
+                    ->orWhere('phone', 'like', "%{$query}%");
             })
             ->limit(10)
             ->get(['id', 'name', 'phone']);
@@ -40,8 +40,8 @@ class CustomerController extends Controller
             'data' => $invoices
         ]);
     }
-    
-    
+
+
     public function store(Request $request)
     {
         $request->validate([
