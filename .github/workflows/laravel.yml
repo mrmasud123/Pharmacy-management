@@ -141,6 +141,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./
           server-dir: /pharmacy/
+          state-name: .ftp-deploy-sync-state-app.json
           exclude: |
             **/.git*
             **/.git*/**
@@ -149,6 +150,10 @@ jobs:
             **/.github/**
             **/public/**
             **/storage/logs/**
+            **/vendor/**
+            **/.env.example
+            **/phpunit.xml
+            **/README.md
 
       - name: Deploy Public Assets (web root)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -158,3 +163,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./public/
           server-dir: /public_html/
+          state-name: .ftp-deploy-sync-state-public.json
