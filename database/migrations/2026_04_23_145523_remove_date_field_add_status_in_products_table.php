@@ -12,7 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('expire_date');
+//            $table->dropColumn('expire_date');
+            if (Schema::hasColumn('products', 'expire_date')) {
+                Schema::table('products', function (Blueprint $table) {
+                    $table->dropColumn('expire_date');
+                });
+            }
             $table->enum('status', ['active', 'inactive'])->default('active')->after('category_id');
         });
     }
