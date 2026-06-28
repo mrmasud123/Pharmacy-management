@@ -142,6 +142,7 @@ jobs:
           local-dir: ./
           server-dir: /pharmacy/
           state-name: .ftp-deploy-sync-state-app.json
+          dangerous-clean-slate: false
           exclude: |
             **/.git*
             **/.git*/**
@@ -151,9 +152,7 @@ jobs:
             **/public/**
             **/storage/logs/**
             **/vendor/**
-            **/.env.example
-            **/phpunit.xml
-            **/README.md
+            **/app/View/Components/header/**
 
       - name: Deploy Public Assets (web root)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
