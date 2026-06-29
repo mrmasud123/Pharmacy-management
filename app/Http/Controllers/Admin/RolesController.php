@@ -43,14 +43,7 @@ class RolesController extends Controller
 //        $this->notifyAdmins($role);
         $createdBy= Auth::user()->name;
         $redirectRoute = route('admin.roles');
-        $data=[
-            'title'      => 'Role Created',
-            'message'    => "Role \"{$role->name}\" was created by {$createdBy}.",
-            'name'  => $role->name,
-            'redirect_route' => $redirectRoute,
-            'created_by' => $createdBy,
-        ];
-        app(NotificationService::class)->sendNotification($data);
+
         return redirect()->route('admin.roles')->with('success', 'Role created successfully.');
     }
 
