@@ -18,18 +18,16 @@
     </div>
 
     <div class="overflow-x-auto">
-        <table id="customersTable" class="datatable w-full text-left">
+        <table id="customerTable" class="w-full text-sm">
             <thead>
-                <tr class="text-gray-600 dark:text-gray-300 border-b dark:border-gray-700">
-                    <th>Customers Name</th>
-
-                    <th>Phone</th>
-                    <th>Action</th>
-                </tr>
+            <tr class="bg-gray-50 dark:bg-gray-800 text-xs uppercase tracking-wide text-gray-400 dark:text-gray-500">
+                <th class="px-4 py-3 text-left w-10">#</th>
+                <th class="px-4 py-3 text-left">Name</th>
+                <th class="px-4 py-3 text-left">Phone</th>
+                <th class="px-4 py-3 text-left">Address</th>
+                <th class="px-4 py-3 text-left w-32">Action</th>
+            </tr>
             </thead>
-            <tbody>
-
-            </tbody>
         </table>
     </div>
 

@@ -168,9 +168,6 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/customers/create', [CustomerController::class, 'createCustomer'])
         ->name('admin.customers.create');
 
-    Route::post('/customers', [CustomerController::class, 'storeCustomer'])
-        ->name('admin.employee.store');
-
     Route::get('/customers/{customer}/edit', [CustomerController::class, 'editCustomer'])
         ->name('admin.customers.edit');
 
