@@ -112,6 +112,23 @@
                     </svg>
                 </button>
 
+                @if(auth()->check() && auth()->user()->hasRole('super admin'))
+                    <a href="{{ route('admin.online-users') }}"
+                       title="View Online Users"
+                       class="relative flex items-center justify-center text-gray-500 transition-colors bg-white border border-gray-200 rounded-full hover:text-dark-900 h-11 w-11 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M10 10C12.0711 10 13.75 8.32107 13.75 6.25C13.75 4.17893 12.0711 2.5 10 2.5C7.92893 2.5 6.25 4.17893 6.25 6.25C6.25 8.32107 7.92893 10 10 10Z"
+                                fill="currentColor" />
+                            <path
+                                d="M10 11.25C6.54822 11.25 3.75 14.0482 3.75 17.5H16.25C16.25 14.0482 13.4518 11.25 10 11.25Z"
+                                fill="currentColor" />
+                        </svg>
+                        <!-- Green online dot indicator -->
+                        <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-green-500 rounded-full ring-2 ring-white dark:ring-gray-900"></span>
+                    </a>
+                @endif
+
                 <!-- Notification Dropdown -->
                 <x-header.notification-dropdown />
             </div>

@@ -9,16 +9,14 @@
                 </div>
                 <div class="order-3 xl:order-2">
                     <h4 class="mb-2 text-center text-lg font-semibold text-gray-800 xl:text-left dark:text-white/90">
-                        Musharof Chowdhury
+                        {{$admin->name ?? 'N/A'}}
                     </h4>
                     <div class="flex flex-col items-center gap-1 text-center xl:flex-row xl:gap-3 xl:text-left">
                         <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Team Manager
+                            {{ optional($admin->roles->first())->name ?? 'N/A' }}
+
                         </p>
-                        <div class="hidden h-3.5 w-px bg-gray-300 xl:block dark:bg-gray-700"></div>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Arizona, United States.
-                        </p>
+
                     </div>
                 </div>
                 <div class="order-2 flex grow items-center gap-2 xl:order-3 xl:justify-end">
@@ -65,7 +63,7 @@
             </div>
 
             <button @click="$dispatch('open-profile-info-modal')"
-                class="shadow-theme-xs flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-800 lg:inline-flex lg:w-auto dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
+                class="shadow-theme-xs flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-800 lg:inline-flex lg:w-auto dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/3 dark:hover:text-gray-200">
                 <svg class="fill-current" width="18" height="18" viewBox="0 0 18 18" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -78,117 +76,95 @@
     </div>
 
     <!-- Profile Info Modal -->
-    <x-ui.modal x-data="{ open: false }" @open-profile-info-modal.window="open = true" :isOpen="false" class="max-w-[700px]">
-        <div
-            class="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
-            <div class="px-2 pr-14">
-                <h4 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-                    Edit Personal Information
-                </h4>
-                <p class="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
-                    Update your details to keep your profile up-to-date.
-                </p>
-            </div>
-            <form class="flex flex-col">
-                <div class="custom-scrollbar h-[458px] overflow-y-auto p-2">
-                    <div>
-                        <h5 class="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-                            Social Links
-                        </h5>
+{{--    <x-ui.modal x-data="{ open: false }" @open-profile-info-modal.window="open = true" :isOpen="false" class="max-w-175">--}}
+{{--        <div--}}
+{{--            class="no-scrollbar relative w-full max-w-175 overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">--}}
+{{--            <div class="px-2 pr-14">--}}
+{{--                <h4 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">--}}
+{{--                    Edit Personal Information--}}
+{{--                </h4>--}}
+{{--                <p class="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">--}}
+{{--                    Update your details to keep your profile up-to-date.--}}
+{{--                </p>--}}
+{{--            </div>--}}
+{{--            <form class="flex flex-col">--}}
+{{--                <div class="custom-scrollbar h-114.5 overflow-y-auto p-2">--}}
+{{--                    <div>--}}
+{{--                        <h5 class="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">--}}
+{{--                            Social Links--}}
+{{--                        </h5>--}}
 
-                        <div class="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                            <div>
-                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Facebook
-                                </label>
-                                <input type="text" value="https://www.facebook.com/PimjoHQ"
-                                    class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
-                            </div>
+{{--                        <div class="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">--}}
+{{--                            <div>--}}
+{{--                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">--}}
+{{--                                    Facebook--}}
+{{--                                </label>--}}
+{{--                                <input type="text" value="https://www.facebook.com/PimjoHQ"--}}
+{{--                                    class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />--}}
+{{--                            </div>--}}
 
-                            <div>
-                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    X.com
-                                </label>
-                                <input type="text" value="https://x.com/PimjoHQ"
-                                    class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
-                            </div>
+{{--                            <div>--}}
+{{--                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">--}}
+{{--                                    X.com--}}
+{{--                                </label>--}}
+{{--                                <input type="text" value="https://x.com/PimjoHQ"--}}
+{{--                                    class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />--}}
+{{--                            </div>--}}
 
-                            <div>
-                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Linkedin
-                                </label>
-                                <input type="text" value="https://www.linkedin.com/company/pimjo/posts/?feedView=all"
-                                    class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
-                            </div>
+{{--                            <div>--}}
+{{--                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">--}}
+{{--                                    Linkedin--}}
+{{--                                </label>--}}
+{{--                                <input type="text" value="https://www.linkedin.com/company/pimjo/posts/?feedView=all"--}}
+{{--                                    class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />--}}
+{{--                            </div>--}}
 
-                            <div>
-                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Instagram
-                                </label>
-                                <input type="text" value="https://instagram.com/emirhan55"
-                                    class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-7">
-                        <h5 class="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">
-                            Personal Information
-                        </h5>
+{{--                            <div>--}}
+{{--                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">--}}
+{{--                                    Instagram--}}
+{{--                                </label>--}}
+{{--                                <input type="text" value="https://instagram.com/emirhan55"--}}
+{{--                                    class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                    <div class="mt-7">--}}
+{{--                        <h5 class="mb-5 text-lg font-medium text-gray-800 dark:text-white/90 lg:mb-6">--}}
+{{--                            Personal Information--}}
+{{--                        </h5>--}}
 
-                        <div class="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
-                            <div class="col-span-2 lg:col-span-1">
-                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    First Name
-                                </label>
-                                <input type="text" value="Musharof"
-                                    class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
-                            </div>
+{{--                        <div class="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">--}}
+{{--                            <div class="col-span-2 lg:col-span-1">--}}
+{{--                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">--}}
+{{--                                    Name--}}
+{{--                                </label>--}}
+{{--                                <input type="text" value="{{$admin->name ?? 'N/A'}}"--}}
+{{--                                    class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />--}}
+{{--                            </div>--}}
 
-                            <div class="col-span-2 lg:col-span-1">
-                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Last Name
-                                </label>
-                                <input type="text" value="Chowdhury"
-                                    class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
-                            </div>
+{{--                            <div class="col-span-2 lg:col-span-1">--}}
+{{--                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">--}}
+{{--                                    Email Address--}}
+{{--                                </label>--}}
+{{--                                <input type="text" value="{{$admin->email ?? 'N/A'}}"--}}
+{{--                                    class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />--}}
+{{--                            </div>--}}
 
-                            <div class="col-span-2 lg:col-span-1">
-                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Email Address
-                                </label>
-                                <input type="text" value="randomuser@pimjo.com"
-                                    class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
-                            </div>
 
-                            <div class="col-span-2 lg:col-span-1">
-                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Phone
-                                </label>
-                                <input type="text" value="+09 363 398 46"
-                                    class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
-                            </div>
-
-                            <div class="col-span-2">
-                                <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
-                                    Bio
-                                </label>
-                                <input type="text" value="Team Manager"
-                                    class="dark:bg-dark-900 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center gap-3 px-2 mt-6 lg:justify-end">
-                    <button @click="open = false" type="button"
-                        class="flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] sm:w-auto">
-                        Close
-                    </button>
-                    <button @click="saveProfile" type="button"
-                        class="flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 sm:w-auto">
-                        Save Changes
-                    </button>
-                </div>
-            </form>
-        </div>
-    </x-ui.modal>
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--                <div class="flex items-center gap-3 px-2 mt-6 lg:justify-end">--}}
+{{--                    <button @click="open = false" type="button"--}}
+{{--                        class="flex w-full justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] sm:w-auto">--}}
+{{--                        Close--}}
+{{--                    </button>--}}
+{{--                    <button @click="saveProfile" type="button"--}}
+{{--                        class="flex w-full justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 sm:w-auto">--}}
+{{--                        Save Changes--}}
+{{--                    </button>--}}
+{{--                </div>--}}
+{{--            </form>--}}
+{{--        </div>--}}
+{{--    </x-ui.modal>--}}
 </div>

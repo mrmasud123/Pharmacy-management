@@ -12,11 +12,13 @@ class ProfileCard extends Component
     public User $admin;
     public function __construct(User $admin)
     {
-        $this->admin = $admin;
+        $this->admin = $admin->load('roles');
     }
 
     public function render(): View|Closure|string
     {
-        return view('components.profile.profile-card');
+        return view('components.profile.profile-card', [
+            'admin' => $this->admin,
+        ]);
     }
 }

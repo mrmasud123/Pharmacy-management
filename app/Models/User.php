@@ -26,6 +26,7 @@ class User extends Authenticatable
         'password',
         'google_id',
         'avatar',
+        'last_activity_at'
     ];
 
     /**
@@ -48,6 +49,12 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'last_activity_at' => 'datetime',
         ];
+    }
+
+    public function isOnline(): bool
+    {
+        return $this->last_activity_at && $this->last_activity_at->gt(now()->subMinutes(5));
     }
 }
