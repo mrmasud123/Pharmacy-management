@@ -5,7 +5,7 @@ import 'datatables.net-dt';
 import 'datatables.net-dt/css/dataTables.dataTables.css';
 
 $(function () {
-    console.log("Customers page");
+    console.log("Roles page");
 
     $('#rolesTable').DataTable({
         processing: true,
@@ -30,12 +30,12 @@ $(function () {
     });
 
 
-    $('#customerTable').DataTable({
+    $('#employeesTable').DataTable({
         processing: true,
         serverSide: true,
-        searching: true,
+        searching:true,
         ajax: {
-            url: 'admin/customer/data',
+            url: 'admin/employee/data',
             type: 'GET',
             dataSrc: function (json) {
                 console.log("DataTables response:", json);
@@ -46,55 +46,19 @@ $(function () {
             }
         },
         columns: [
-            {
-                data: null,
-                name: 'id',
-                orderable: false,
-                searchable: false,
-                render: (data, type, row, meta) => `<span class="text-gray-400">${meta.row + 1}</span>`
-            },
-            {
-                data: 'name',
-                name: 'name',
-                render: data => {
-                    const initials = data.split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
-                    return `
-                    <div class="flex items-center gap-2">
-                        <span class="w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300
-                                     text-xs font-medium flex items-center justify-center shrink-0">${initials}</span>
-                        <span class="font-medium text-gray-800 dark:text-gray-100">${data}</span>
-                    </div>`;
-                }
-            },
-            {
-                data: 'phone',
-                name: 'phone',
-                orderable: false,
-                searchable: false,
-                defaultContent: '—'
-            },
-            {
-                data: 'address',
-                name: 'address',
-                orderable: false,
-                searchable: false,
-                render: data => `<span class="text-gray-500 dark:text-gray-400">${data ?? '—'}</span>`
-            },
-
-            {
-                data: 'action',
-                name: 'action',
-                orderable: false,
-                searchable: false
-            },
-        ],
-
-
+            { data: 'name', name: 'name' },
+            { data: 'employee_code', orderable: false, searchable: false },
+            { data: 'designation', orderable: false, searchable: false },
+            { data: 'join_date', orderable: false, searchable: false },
+            { data: 'email', orderable: false, searchable: false },
+            { data: 'phone', orderable: false, searchable: false },
+            { data: 'action', orderable: false, searchable: false }
+        ]
     });
 
 
 
-    $('#customerForm').on('submit', function (e) {
+    $('#employeeForm').on('submit', function (e) {
             e.preventDefault();
 
             const form = this;
@@ -129,7 +93,7 @@ $(function () {
                         text: response.message,
                         icon: 'success'
                     }).then(() => {
-                        window.location.href = "/customers";
+                        window.location.href = "/employees";
                     });
                 },
 
