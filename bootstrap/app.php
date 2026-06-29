@@ -21,9 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => RoleOrPermissionMiddleware::class,
         ]);
         $middleware->redirectGuestsTo('/login');
-        $middleware->web(append: [
-            \App\Http\Middleware\UpdateLastActivity::class,
-        ]);
+//        $middleware->web(append: [
+//            \App\Http\Middleware\UpdateLastActivity::class,
+//        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

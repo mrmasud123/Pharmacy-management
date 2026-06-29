@@ -22,9 +22,10 @@ class AdminController extends Controller
             'admin' => $admin
         ]);
     }
+
     public function onlineUsers()
     {
-        $onlineUsers = User::where('last_activity_at', '>=', now()->subMinutes(5))
+        $onlineUsers = User::whereNotNull('last_activity_at')
             ->orderByDesc('last_activity_at')
             ->get();
 

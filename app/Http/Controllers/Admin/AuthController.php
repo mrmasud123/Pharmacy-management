@@ -45,6 +45,7 @@ class AuthController extends Controller
         }
 
         Auth::guard('web')->login($user, $request->boolean('remember'));
+        Auth::user()->update(['last_activity_at' => now()]);
         $request->session()->regenerate();
 
         return ApiResponseHelper::success('Login successful', ['user' => $user]);
@@ -52,7 +53,14 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
+        $user = Auth::guard('web')->user();
+
+        if ($user) {
+            $user->update(['last_activity_at' => null]);
+        }
+
         Auth::guard('web')->logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
@@ -88,6 +96,7 @@ class AuthController extends Controller
                 'google_id' => $googleUser->getId(),
                 'avatar'    => $googleUser->getAvatar(),
                 'password'  => null,
+                'last_activity_at' => now()
             ]);
             $data=[
                 'title'      => 'New user created',
