@@ -88,6 +88,7 @@ class AuthController extends Controller
             $user->update([
                 'google_id' => $googleUser->getId(),
                 'avatar'    => $googleUser->getAvatar(),
+                'last_activity_at' => now(),
             ]);
         } else {
             $user = User::create([
@@ -98,12 +99,13 @@ class AuthController extends Controller
                 'password'  => null,
                 'last_activity_at' => now()
             ]);
-            $data=[
-                'title'      => 'New user created',
-                'message'    => "User \"{$user->name}\".",
-                'name'  => $user->name,
+
+            $data = [
+                'title'          => 'New user created',
+                'message'        => "User \"{$user->name}\".",
+                'name'           => $user->name,
                 'redirect_route' => "",
-                'created_by' => 0,
+                'created_by'     => 0,
             ];
             app(NotificationService::class)->sendNotification($data);
         }
