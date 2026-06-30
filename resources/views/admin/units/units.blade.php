@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('vendor-scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-@vite(['resources/assets/js/units.js'])
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @vite(['resources/assets/js/units.js'])
 @endsection
 
 @section('content')

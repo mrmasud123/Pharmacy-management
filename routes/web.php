@@ -28,7 +28,7 @@ Route::middleware('auth:web')->group(function () {
     Route::get('/online-users', [AdminController::class, 'onlineUsers'])->name('admin.online-users');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/', function () {
-        return view('pages.dashboard.ecommerce', ['title' => 'E-commerce Dashboard']);
+        return view('pages.dashboard.ecommerce');
     })->name('dashboard');
 
     Route::get('/roles', [RolesController::class, 'index'])->name('admin.roles');

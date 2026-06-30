@@ -20,49 +20,18 @@ class BrandController extends Controller
 
     public function brands()
     {
-        $brands = collect([
-            (object) [
-                'id' => 1,
-                'name' => 'Apple',
-                'code' => 'APL',
-                'status' => 'active',
-            ],
-            (object) [
-                'id' => 2,
-                'name' => 'Samsung',
-                'code' => 'SMS',
-                'status' => 'active',
-            ],
-            (object) [
-                'id' => 3,
-                'name' => 'Xiaomi',
-                'code' => 'XMI',
-                'status' => 'inactive',
-            ],
-            (object) [
-                'id' => 4,
-                'name' => 'Dell',
-                'code' => 'DLL',
-                'status' => 'active',
-            ],
-            (object) [
-                'id' => 5,
-                'name' => 'HP',
-                'code' => 'HPC',
-                'status' => 'inactive',
-            ],
-        ]);
-        return view('admin.brands.manage-brand', compact('brands'));
+       $title= "Brands";
+        return view('admin.brands.manage-brand', compact('title'));
     }
 
     public function createBrand()
     {
-        return view('admin.brands.form');
+        return view('admin.brands.form',['title'=>'Create Brand']);
     }
 
     public function editBrand(Brand $brand)
     {
-        return view('admin.brands.form', compact('brand'));
+        return view('admin.brands.form', compact('brand',['title'=>'Edit Brand']));
     }
 
     public function store(StoreBrandRequest $request)
@@ -104,22 +73,22 @@ class BrandController extends Controller
                 return '
                     <div x-data="{ switcherToggle: ' . ($brand->status == 1 ? 'true' : 'false') . ' }">
                         <label class="flex cursor-pointer items-center gap-3 text-sm font-medium text-gray-700 select-none dark:text-gray-400">
-                            
+
                             <div class="relative">
                                 <input type="checkbox"
                                     class="sr-only brandStatusToggler"
                                     data-id="' . $brand->id . '"
                                     x-model="switcherToggle" />
-                
+
                                 <div class="block h-6 w-11 rounded-full"
                                     :class="switcherToggle ? \'bg-green-500 dark:bg-green-500\' : \'bg-gray-200 dark:bg-white/10\'">
                                 </div>
-                
+
                                 <div :class="switcherToggle ? \'translate-x-full\' : \'translate-x-0\'"
                                     class="shadow-theme-sm absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white duration-300 ease-linear">
                                 </div>
                             </div>
-                
+
                             <span x-text="switcherToggle ? \'Active\' : \'Inactive\'"></span>
                         </label>
                     </div>';
@@ -134,7 +103,7 @@ class BrandController extends Controller
                             Edit
                         </a>
 
-                        <button 
+                        <button
                             class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition deleteBtn"
                             data-id="' . $brand->id . '">
                             Delete

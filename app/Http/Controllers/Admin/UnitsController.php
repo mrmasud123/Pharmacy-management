@@ -18,13 +18,13 @@ class UnitsController extends Controller
 
     public function units()
     {
-        return view('admin.units.units');
+        return view('admin.units.units', ['title' =>"Measurement units"]);
     }
-    
+
     public function createUnit(){
         return view('admin.units.form');
     }
-    
+
     public function store(StoreUnitRequest $request)
     {
         $data = $request->validated();
@@ -37,13 +37,13 @@ class UnitsController extends Controller
             'data' => $unit
         ]);
     }
-    
-    
+
+
     public function editUnit(Unit $unit)
     {
         return view('admin.units.form', compact('unit'));
     }
-    
+
     public function update(UpdateUnitRequest $request, Unit $unit)
     {
         $data = $request->validated();
@@ -54,7 +54,7 @@ class UnitsController extends Controller
             'data' => $unit
         ]);
     }
-    
+
     public function updateStatus(Request $request, $id)
     {
         $unit = Unit::findOrFail($id);
@@ -81,22 +81,22 @@ class UnitsController extends Controller
                 return '
                     <div x-data="{ switcherToggle: ' . ($unit->is_active == 1 ? 'true' : 'false') . ' }">
                         <label class="flex cursor-pointer items-center gap-3 text-sm font-medium text-gray-700 select-none dark:text-gray-400">
-                            
+
                             <div class="relative">
                                 <input type="checkbox"
                                     class="sr-only unitStatusToggler"
                                     data-id="' . $unit->id . '"
                                     x-model="switcherToggle" />
-                
+
                                 <div class="block h-6 w-11 rounded-full"
                                     :class="switcherToggle ? \'bg-green-500 dark:bg-green-500\' : \'bg-gray-200 dark:bg-white/10\'">
                                 </div>
-                
+
                                 <div :class="switcherToggle ? \'translate-x-full\' : \'translate-x-0\'"
                                     class="shadow-theme-sm absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white duration-300 ease-linear">
                                 </div>
                             </div>
-                
+
                             <span x-text="switcherToggle ? \'Active\' : \'Inactive\'"></span>
                         </label>
                     </div>';
@@ -111,7 +111,7 @@ class UnitsController extends Controller
                             Edit
                         </a>
 
-                        <button 
+                        <button
                             class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition deleteBtn"
                             data-id="' . $unit->id . '">
                             Delete

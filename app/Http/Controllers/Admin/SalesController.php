@@ -16,53 +16,12 @@ use App\Models\Sale;
 class SalesController extends Controller
 {
     public function index(){
-        $sales = collect([
-            (object)[
-                'id' => 1,
-                'invoice_id' => 'INV-1001',
-                'sr_invoice' => 'SR-5001',
-                'date' => now()->subDays(1),
-                'customer' => (object)['name' => 'John Doe'],
-                'payable_amount' => 1500,
-                'paid_amount' => 1200,
-                'due_amount' => 300,
-            ],
-            (object)[
-                'id' => 2,
-                'invoice_id' => 'INV-1002',
-                'sr_invoice' => 'SR-5002',
-                'date' => now()->subDays(2),
-                'customer' => (object)['name' => 'Jane Smith'],
-                'payable_amount' => 2500,
-                'paid_amount' => 2500,
-                'due_amount' => 0,
-            ],
-            (object)[
-                'id' => 3,
-                'invoice_id' => 'INV-1003',
-                'sr_invoice' => null,
-                'date' => now()->subDays(3),
-                'customer' => null,
-                'payable_amount' => 3200,
-                'paid_amount' => 1000,
-                'due_amount' => 2200,
-            ],
-            (object)[
-                'id' => 4,
-                'invoice_id' => 'INV-1004',
-                'sr_invoice' => 'SR-5004',
-                'date' => now()->subDays(4),
-                'customer' => (object)['name' => 'Michael Lee'],
-                'payable_amount' => 1800,
-                'paid_amount' => 1800,
-                'due_amount' => 0,
-            ],
-        ]);
-        return view('admin.sales.sales', compact('sales'));
+
+        return view('admin.sales.sales', ['title' => "Sale"]);
     }
     public function create( ){
 
-        return view('admin.sales.sales-form');
+        return view('admin.sales.sales-form',['title' => "New Sale"]);
 
     }
     public function collection(){

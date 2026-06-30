@@ -21,13 +21,13 @@ class DueCollectionController extends Controller
     public function __construct(protected DueCollectionService $dueCollectionService){}
     public function index(){
 
-        return view('admin.collection.index');
+        return view('admin.collection.index',['title' => "Collections"]);
     }
 
     public function customerInvoices(Customer $customer){
         $customer = Customer::with('sales.items.product', 'sales.items.productBatch')->findOrFail($customer->id);
-
-        return view('admin.collection.invoices', compact('customer'));
+        $title="All Invoices";
+        return view('admin.collection.invoices', compact('customer','title'));
     }
 
     public function payDue(Request $request, Sale $sale)
@@ -45,8 +45,8 @@ class DueCollectionController extends Controller
     public function edit(Sale $sale){
         $sale->load(['items.product', 'items.productBatch', 'customer']);
         $products = Product::with('batches')->orderBy('name')->get();
-
-        return view('admin.collection.edit-invoice', compact('sale', 'products'));
+        $title= "Edit Invoice";
+        return view('admin.collection.edit-invoice', compact('sale', 'products','title'));
     }
 
     public function update(Request $request, Sale $sale)
@@ -72,9 +72,9 @@ class DueCollectionController extends Controller
         $totalDebit = Transaction::where('customer_id', $customer->id)
             ->where('direction', 'debit')
             ->sum('amount');
-
+        $title= "Payment History";
         return view('admin.collection.payment-history', compact(
-            'customer', 'transactions', 'totalCredit', 'totalDebit'
+            'title','customer', 'transactions', 'totalCredit', 'totalDebit'
         ));
     }
     public function data(Request $request)

@@ -20,19 +20,20 @@ class ProductTypeController extends Controller
 
     public function productTypes()
     {
-        return view('admin.product-types.product-types');
+        return view('admin.product-types.product-types',['title' =>"Product Types"]);
     }
 
     public function editProductType(ProductType $productType)
     {
-        return view('admin.product-types.form', compact('productType'));
+        $title = "Edit Product Type";
+        return view('admin.product-types.form', compact('productType','title'));
     }
 
 
     public function createProductType()
     {
 
-        return view('admin.product-types.form');
+        return view('admin.product-types.form',['title' => "Create Product Type"]);
 
     }
 
@@ -89,22 +90,22 @@ class ProductTypeController extends Controller
                 return '
                 <div x-data="{ switcherToggle: ' . ($productType->status == 1 ? 'true' : 'false') . ' }">
                     <label class="flex cursor-pointer items-center gap-3 text-sm font-medium text-gray-700 select-none dark:text-gray-400">
-                        
+
                         <div class="relative">
                             <input type="checkbox"
                                 class="sr-only productTypeStatusToggler"
                                 data-id="' . $productType->id . '"
                                 x-model="switcherToggle" />
-            
+
                             <div class="block h-6 w-11 rounded-full"
                                 :class="switcherToggle ? \'bg-green-500 dark:bg-green-500\' : \'bg-gray-200 dark:bg-white/10\'">
                             </div>
-            
+
                             <div :class="switcherToggle ? \'translate-x-full\' : \'translate-x-0\'"
                                 class="shadow-theme-sm absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white duration-300 ease-linear">
                             </div>
                         </div>
-            
+
                         <span x-text="switcherToggle ? \'Active\' : \'Inactive\'"></span>
                     </label>
                 </div>';
@@ -127,7 +128,7 @@ class ProductTypeController extends Controller
                             Edit
                         </a>
 
-                        <button 
+                        <button
                             class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition deleteBtn"
                             data-id="' . $productType->id . '">
                             Delete

@@ -21,7 +21,7 @@ class ProductController extends Controller
 
     public function __construct(protected ProductService $productService){}
     public function products(){
-        return view('admin.products.products');
+        return view('admin.products.products',['title' => 'All Products']);
     }
 
     public function createProduct(){
@@ -32,8 +32,8 @@ class ProductController extends Controller
         $categories = collect(Category::all());
 
         $suppliers = collect(Supplier::all());
-
-        return view('admin.products.form', compact('brands','types','categories','suppliers'));
+        $title = "Add Product";
+        return view('admin.products.form', compact('title','brands','types','categories','suppliers'));
     }
 
     public function editProduct(Product $product){
@@ -44,7 +44,8 @@ class ProductController extends Controller
         $categories = collect(Category::all());
 
         $suppliers = collect(Supplier::all());
-        return view('admin.products.form', compact('product', 'brands', 'types', 'categories', 'suppliers'));
+        $title= "Edit Product";
+        return view('admin.products.form', compact('title','product', 'brands', 'types', 'categories', 'suppliers'));
     }
 
     public function storeProduct(StoreProductRequest $request){
@@ -64,9 +65,10 @@ class ProductController extends Controller
 
     public function addStock(Product $product)
     {
+        $title="Add Stock";
         $suppliers = Supplier::all();
         $units = Unit::all();
-        return view('admin.products.add-stock', compact('product', 'suppliers', 'units'));
+        return view('admin.products.add-stock', compact('product','title', 'suppliers', 'units'));
     }
 
     public function storeStock(StoreBatchProductRequest $request, $productId)
@@ -81,9 +83,10 @@ class ProductController extends Controller
 
     public function viewStock($productId)
     {
+        $title= "View Stock";
         $product = Product::with('batches.supplier', 'batches.unit')->findOrFail($productId);
 
-        return view('admin.products.view-stock', compact('product'));
+        return view('admin.products.view-stock', compact('product','title'));
     }
 
     public function data()

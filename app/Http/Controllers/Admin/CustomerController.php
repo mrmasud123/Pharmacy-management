@@ -14,7 +14,7 @@ class CustomerController extends Controller
 {
 
     public function customers(){
-        return view('admin.customers.customers');
+        return view('admin.customers.customers', ['title' => "Customers"]);
     }
     public function search(Request $request)
     {
@@ -38,12 +38,13 @@ class CustomerController extends Controller
     }
 
     public function createCustomer(){
-        return view('admin.customers.create-customer');
+        return view('admin.customers.create-customer', ['title' => "Create customer"]);
     }
 
     public function editCustomer(Customer $customer)
     {
-        return view('admin.customers.edit-customer', compact('customer'));
+        $title = "Edit customer";
+        return view('admin.customers.edit-customer', compact('customer','title'));
     }
 
     public function updateCustomer(){
@@ -51,7 +52,7 @@ class CustomerController extends Controller
     }
     public function rolePermissionMapping(){
 
-        return view('admin.employees.employee-with-role-permission' );
+        return view('admin.employees.employee-with-role-permission',['title' => "Role Permission Mapping"] );
     }
     public function invoice(Request $request)
     {
@@ -75,8 +76,8 @@ class CustomerController extends Controller
         $user = User::select('id', 'name', 'email')
             ->with('roles:id,name')
             ->findOrFail($user->id);
-
-        return view('admin.employees.role-permission-mapping', compact('roles', 'user'));
+        $title= "Assign Employee Role";
+        return view('admin.employees.role-permission-mapping', compact('title','roles', 'user'));
     }
 
     public function storeMapping(Request $request)

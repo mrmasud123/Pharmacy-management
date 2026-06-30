@@ -13,50 +13,20 @@ class CategoryController extends Controller
 {
     public function categories()
     {
-        $categories = collect([
-            (object) [
-                'id' => 1,
-                'name' => 'Smartphones',
-                'code' => 'SMRT',
-                'status' => 'active',
-            ],
-            (object) [
-                'id' => 2,
-                'name' => 'Laptops',
-                'code' => 'LAPT',
-                'status' => 'active',
-            ],
-            (object) [
-                'id' => 3,
-                'name' => 'Home Appliances',
-                'code' => 'HOME',
-                'status' => 'inactive',
-            ],
-            (object) [
-                'id' => 4,
-                'name' => 'Fashion Wear',
-                'code' => 'FASH',
-                'status' => 'active',
-            ],
-            (object) [
-                'id' => 5,
-                'name' => 'Kitchen Items',
-                'code' => 'KITC',
-                'status' => 'active',
-            ],
-        ]);
 
-        return view('admin.category.categories', compact('categories'));
+
+        return view('admin.category.categories', ['title' =>"Categories"]);
     }
 
     public function createCategory()
     {
-        return view('admin.category.create-category');
+        return view('admin.category.create-category', ['title' => "Create Category"]);
     }
 
     public function editCategory(Category $category)
     {
-        return view('admin.category.edit-category', compact('category'));
+        $title = "Edit Category";
+        return view('admin.category.edit-category', compact('category', 'title'));
     }
 
     public function storeCategory(StoreCategoryRequest $request)
@@ -114,22 +84,22 @@ class CategoryController extends Controller
                 return '
             <div x-data="{ switcherToggle: ' . ($category->is_active == 1 ? 'true' : 'false') . ' }">
                 <label class="flex cursor-pointer items-center gap-3 text-sm font-medium text-gray-700 select-none dark:text-gray-400">
-                    
+
                     <div class="relative">
                         <input type="checkbox"
                             class="sr-only categoryStatusToggler"
                             data-id="' . $category->id . '"
                             x-model="switcherToggle" />
-        
+
                         <div class="block h-6 w-11 rounded-full"
                             :class="switcherToggle ? \'bg-green-500 dark:bg-green-500\' : \'bg-gray-200 dark:bg-white/10\'">
                         </div>
-        
+
                         <div :class="switcherToggle ? \'translate-x-full\' : \'translate-x-0\'"
                             class="shadow-theme-sm absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white duration-300 ease-linear">
                         </div>
                     </div>
-        
+
                     <span x-text="switcherToggle ? \'Active\' : \'Inactive\'"></span>
                 </label>
             </div>';
@@ -150,7 +120,7 @@ class CategoryController extends Controller
                         </a>
 
                         <!-- Delete Button -->
-                        <button 
+                        <button
                             class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-lg transition deleteBtn"
                             data-id="' . $category->id . '">
                             Delete
