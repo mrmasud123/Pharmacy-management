@@ -6,7 +6,7 @@ use App\Models\Product;
 use App\Models\ProductBatch;
 use App\Models\StockMovement;
 use Illuminate\Support\Facades\DB;
-use Pest\Support\Str;
+use Illuminate\Support\Str;
 
 class ProductService
 {
