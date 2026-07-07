@@ -16,7 +16,11 @@ use App\Http\Controllers\Admin\AIChatbotController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\Admin\DueCollectionController;
+use App\Http\Controllers\SsoCallbackController;
 
+Route::get('/sso/callback', [SsoCallbackController::class, 'callback'])
+    ->name('sso.callback')
+    ->withoutMiddleware(['auth']);
 //Authentication
 Route::get('/login', [AuthController::class, 'index'])->name('login.index');
 Route::post('/login', [AuthController::class, 'login'])->name('login');

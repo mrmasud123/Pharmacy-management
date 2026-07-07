@@ -13,7 +13,7 @@
     <div class="flex mb-4">
         <a href="{{ route('admin.customers.create') }}"
            class="px-3 py-1.5 bg-blue-500 text-white rounded-lg ml-auto">
-            Add Customers
+            Add Customer?
         </a>
     </div>
 
